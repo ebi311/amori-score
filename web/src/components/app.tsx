@@ -30,18 +30,6 @@ export const App: React.FC = () => {
             <Route path="/scores/:id" element={<PlayerList />} />
           </Routes>
         </Container>
-        <ConventionDialog
-          open={true}
-          convention={{
-            title: 'イベント01',
-            date: new Date('2022-01-01T00:00:00Z'),
-            id: '001',
-            note: '備考1',
-            place: '場所1',
-          }}
-          onClose={() => ''}
-          onCommit={() => ''}
-        />
       </HashRouter>
     </>
   );

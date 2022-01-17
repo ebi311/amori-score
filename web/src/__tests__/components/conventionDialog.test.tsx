@@ -149,3 +149,4 @@ test('ダイアログを閉じる', () => {
   const container = queryByTestId('container');
   expect(container).toBeFalsy();
 });
+test.todo('ダイアログを開き直したときに、もとに戻す');

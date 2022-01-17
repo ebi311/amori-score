@@ -51,6 +51,9 @@ export const ConventionList: React.FC = () => {
   const onClickNew = useCallback(() => {
     dispatch(setOpenDialogForConvention(true));
   }, [dispatch]);
+  const onCloseDialog = useCallback(() => {
+    dispatch(setOpenDialogForConvention(false));
+  }, [dispatch]);
   return (
     <>
       <Typography variant="h4">最近のイベント</Typography>
@@ -68,9 +71,7 @@ export const ConventionList: React.FC = () => {
         onCommit={() => {
           /** */
         }}
-        onClose={() => {
-          /** */
-        }}
+        onClose={onCloseDialog}
         convention={{
           date: new Date(),
           id: '',
