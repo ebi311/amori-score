@@ -103,7 +103,7 @@ test('登録ボタンを押す', () => {
   });
 });
 test('入力チェック', () => {
-  const [{ getByTestId }, _store, theme] = render();
+  const [{ getByTestId }, , theme] = render();
 
   let titleInput = getByTestId('title-input');
   let dateInput = getByTestId('date-input');
