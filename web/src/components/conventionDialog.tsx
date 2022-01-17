@@ -1,3 +1,4 @@
+import { DesktopDatePicker } from '@mui/lab';
 import {
   Box,
   Button,
@@ -7,7 +8,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useCallback, useState } from 'react';
 import { Convention } from '../controllers/convention';
 
@@ -18,30 +19,42 @@ type Props = {
   onClose: () => void;
 };
 
+type Errors = Partial<{ [key in keyof Convention]: boolean }>;
+const hasError = (errors: Errors) => {
+  return Object.entries(errors).some(([, val]) => {
+    if (typeof val !== 'boolean') return false;
+    return val;
+  });
+};
+
 export const ConventionDialog: React.FC<Props> = (props) => {
   const { open, convention: initConvention, onClose, onCommit } = props;
   const [convention, setConvention] = useState(initConvention);
+  const [errors, setErrors] = useState<Errors>({});
   const onChangeString = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const field = e.currentTarget.parentElement?.parentElement?.dataset[
-        'id'
-      ] as 'title' | 'place';
+      const field = e.currentTarget.dataset['id'] as 'title' | 'place';
       const { value } = e.currentTarget;
       setConvention({ ...convention, [field]: value });
+      setErrors({ ...errors, [field]: value.trim() === '' });
     },
-    [convention],
+    [convention, errors],
   );
   const onChangeDate = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.currentTarget;
-      const date = dayjs(value).toDate();
-      setConvention({ ...convention, date });
+    (date: Dayjs | null) => {
+      if (!date) {
+        setErrors({ ...errors, date: true });
+        return;
+      }
+      setConvention({ ...convention, date: date.toDate() });
+      setErrors({ ...errors, date: !date.isValid() });
     },
-    [convention],
+    [convention, errors],
   );
   const onClickCommitButton = useCallback(() => {
+    if (hasError(errors)) return;
     onCommit(convention);
-  }, [convention, onCommit]);
+  }, [convention, errors, onCommit]);
   const onClickCancelButton = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -55,13 +68,22 @@ export const ConventionDialog: React.FC<Props> = (props) => {
             value={convention.title}
             data-id="title"
             onChange={onChangeString}
+            inputProps={{ 'data-id': 'title' }}
+            error={errors.title}
           />
-          <TextField
+          <DesktopDatePicker
             label="開催日"
-            data-testid="date-input"
-            type="date"
-            value={dayjs(convention.date).format('YYYY-MM-DD')}
+            inputFormat="YYYY/MM/DD"
+            value={convention.date}
             onChange={onChangeDate}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                data-testid="date-input"
+                error={errors.date}
+              />
+            )}
+            mask="____/__/__"
           />
           <TextField
             label="開催場所"
@@ -69,6 +91,8 @@ export const ConventionDialog: React.FC<Props> = (props) => {
             value={convention.place}
             data-id="place"
             onChange={onChangeString}
+            inputProps={{ 'data-id': 'place' }}
+            error={errors.place}
           />
         </Stack>
       </DialogContent>

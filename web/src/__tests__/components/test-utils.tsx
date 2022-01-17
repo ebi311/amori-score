@@ -34,5 +34,6 @@ export const customRender = (
   return [
     render(ui, { wrapper: testProvider(store), ...options }),
     store,
+    theme,
   ] as const;
 };

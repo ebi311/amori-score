@@ -1,11 +1,17 @@
 {
-	"folders": [
-		{
-			"path": "web"
-		},
-		{
-			"path": "electron"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "web"
+    },
+    {
+      "path": "electron"
+    }
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["electron"],
+    "jest.autoRun": {
+      "watch": false,
+      "onSave": "test-src-file"
+    }
+  }
 }
