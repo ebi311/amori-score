@@ -1,6 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { fireEvent } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
+import { ConventionDialog } from '../../components/conventionDialog';
 import { ConventionList } from '../../components/conventionList';
 import { Convention } from '../../controllers/convention';
 import { customRender as _render } from './test-utils';
@@ -45,6 +46,17 @@ test('新しいイベントを作成する', () => {
   const newButton = getByTestId('new-button');
   fireEvent.click(newButton);
   expect(store.getState().openConventionDialog).toBe(true);
+  const dialog = getByTestId('convention-dialog');
+  const titleTextField = dialog.querySelector(
+    '[data-id=title]',
+  ) as HTMLInputElement;
+  expect(titleTextField?.value).toBe('');
+  const datePicker = dialog.querySelector('[data-id=date]') as HTMLInputElement;
+  expect(datePicker?.value).toBe('');
+  const placeTextField = dialog.querySelector(
+    '[data-id=place]',
+  ) as HTMLInputElement;
+  expect(placeTextField?.value).toBe('');
 });
 test('既存のイベントを開く', () => {
   const [{ getByTestId }] = render();

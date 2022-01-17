@@ -16,6 +16,7 @@ import { setOpenDialogForConvention } from '../actions/actions';
 import { Convention } from '../controllers/convention';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
+import { ConventionDialog } from './conventionDialog';
 
 export const ConventionList: React.FC = () => {
   const styles = useStyles((theme: Theme) => ({
@@ -30,9 +31,10 @@ export const ConventionList: React.FC = () => {
       }
     `,
   }));
-  const conList = useSelector<GlobalState, Convention[]>(
-    (a) => a.conventionList,
-  );
+  const [conList, openDialog] = useSelector<
+    GlobalState,
+    [Convention[], boolean]
+  >((a) => [a.conventionList, a.openConventionDialog]);
   const rows = useMemo(() => {
     return conList.map((con) => {
       const secondary = `${dayjs(con.date).format('YYYY-MM-DD')} 開催場所: ${
@@ -60,6 +62,23 @@ export const ConventionList: React.FC = () => {
       <List data-testid="con-list" css={styles.root}>
         {rows}
       </List>
+      <ConventionDialog
+        data-testid="convention-dialog"
+        open={openDialog}
+        onCommit={() => {
+          /** */
+        }}
+        onClose={() => {
+          /** */
+        }}
+        convention={{
+          date: new Date(),
+          id: '',
+          note: '',
+          place: '',
+          title: '',
+        }}
+      />
     </>
   );
 };

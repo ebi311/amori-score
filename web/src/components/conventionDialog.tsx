@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogProps,
   Stack,
   TextField,
 } from '@mui/material';
@@ -11,8 +12,8 @@ import { Dayjs } from 'dayjs';
 import React, { useCallback, useState } from 'react';
 import { Convention } from '../controllers/convention';
 
-type Props = {
-  open: boolean;
+type Props = DialogProps & {
+  // open: boolean;
   convention: Convention;
   onCommit: (con: Convention) => void;
   onClose: () => void;
@@ -27,7 +28,12 @@ const hasError = (errors: Errors) => {
 };
 
 export const ConventionDialog: React.FC<Props> = (props) => {
-  const { open, convention: initConvention, onClose, onCommit } = props;
+  const {
+    convention: initConvention,
+    onClose,
+    onCommit,
+    ...dialogProps
+  } = props;
   const [convention, setConvention] = useState(initConvention);
   const [errors, setErrors] = useState<Errors>({});
   const onChangeString = useCallback(
@@ -58,14 +64,13 @@ export const ConventionDialog: React.FC<Props> = (props) => {
     onClose();
   }, [onClose]);
   return (
-    <Dialog open={open}>
+    <Dialog {...dialogProps}>
       <DialogContent data-testid="container">
         <Stack spacing={2}>
           <TextField
             label="イベント名"
             data-testid="title-input"
             value={convention.title}
-            data-id="title"
             onChange={onChangeString}
             inputProps={{ 'data-id': 'title' }}
             error={errors.title}
@@ -80,6 +85,7 @@ export const ConventionDialog: React.FC<Props> = (props) => {
                 {...params}
                 data-testid="date-input"
                 error={errors.date}
+                // inputProps={{ 'data-id': 'date' }}
               />
             )}
             mask="____/__/__"
@@ -88,7 +94,6 @@ export const ConventionDialog: React.FC<Props> = (props) => {
             label="開催場所"
             data-testid="place-input"
             value={convention.place}
-            data-id="place"
             onChange={onChangeString}
             inputProps={{ 'data-id': 'place' }}
             error={errors.place}

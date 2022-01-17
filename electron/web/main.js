@@ -71724,8 +71724,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const hasError = (errors) => {
+    return Object.entries(errors).some(([, val]) => {
+        if (typeof val !== 'boolean')
+            return false;
+        return val;
+    });
+};
 const ConventionDialog = (props) => {
-    const { open, convention: initConvention, onClose, onCommit } = props;
+    const { convention: initConvention, onClose, onCommit, ...dialogProps } = props;
     const [convention, setConvention] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(initConvention);
     const [errors, setErrors] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({});
     const onChangeString = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((e) => {
@@ -71743,12 +71750,14 @@ const ConventionDialog = (props) => {
         setErrors({ ...errors, date: !date.isValid() });
     }, [convention, errors]);
     const onClickCommitButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+        if (hasError(errors))
+            return;
         onCommit(convention);
-    }, [convention, onCommit]);
+    }, [convention, errors, onCommit]);
     const onClickCancelButton = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
         onClose();
     }, [onClose]);
-    return ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], { open: open, children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], { "data-testid": "container", children: (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], { spacing: 2, children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { label: "\u30A4\u30D9\u30F3\u30C8\u540D", "data-testid": "title-input", value: convention.title, "data-id": "title", onChange: onChangeString, inputProps: { 'data-id': 'title' }, error: errors.title }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_lab__WEBPACK_IMPORTED_MODULE_6__["default"], { label: "\u958B\u50AC\u65E5", inputFormat: "YYYY/MM/DD", value: convention.date, onChange: onChangeDate, renderInput: (params) => ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { ...params, "data-testid": "date-input", error: errors.date }, void 0)), mask: "____/__/__" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { label: "\u958B\u50AC\u5834\u6240", "data-testid": "place-input", value: convention.place, "data-id": "place", onChange: onChangeString, inputProps: { 'data-id': 'place' }, error: errors.place }, void 0)] }, void 0) }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], { "data-testid": "cancel-button", onClick: onClickCancelButton, children: "\u30AD\u30E3\u30F3\u30BB\u30EB" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], { "data-testid": "commit-button", onClick: onClickCommitButton, variant: "contained", children: "\u767B\u9332" }, void 0)] }, void 0)] }, void 0));
+    return ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], { ...dialogProps, children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], { "data-testid": "container", children: (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], { spacing: 2, children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { label: "\u30A4\u30D9\u30F3\u30C8\u540D", "data-testid": "title-input", value: convention.title, onChange: onChangeString, inputProps: { 'data-id': 'title' }, error: errors.title }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_lab__WEBPACK_IMPORTED_MODULE_6__["default"], { label: "\u958B\u50AC\u65E5", inputFormat: "YYYY/MM/DD", value: convention.date, onChange: onChangeDate, renderInput: (params) => ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { ...params, "data-testid": "date-input", error: errors.date, inputProps: { 'data-id': 'date' } }, void 0)), mask: "____/__/__" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { label: "\u958B\u50AC\u5834\u6240", "data-testid": "place-input", value: convention.place, onChange: onChangeString, inputProps: { 'data-id': 'place' }, error: errors.place }, void 0)] }, void 0) }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], { "data-testid": "cancel-button", onClick: onClickCancelButton, children: "\u30AD\u30E3\u30F3\u30BB\u30EB" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], { "data-testid": "commit-button", onClick: onClickCommitButton, variant: "contained", children: "\u767B\u9332" }, void 0)] }, void 0)] }, void 0));
 };
 
 
@@ -71780,6 +71789,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var _actions_actions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../actions/actions */ "./src/actions/actions.ts");
 /* harmony import */ var _commonStyles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./commonStyles */ "./src/components/commonStyles.ts");
+/* harmony import */ var _conventionDialog__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./conventionDialog */ "./src/components/conventionDialog.tsx");
+
 
 
 
@@ -71801,7 +71812,7 @@ const ConventionList = () => {
       }
     `,
     }));
-    const conList = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)((a) => a.conventionList);
+    const [conList, openDialog] = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)((a) => [a.conventionList, a.openConventionDialog]);
     const rows = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(() => {
         return conList.map((con) => {
             const secondary = `${dayjs__WEBPACK_IMPORTED_MODULE_0___default()(con.date).format('YYYY-MM-DD')} 開催場所: ${con.place}`;
@@ -71812,7 +71823,17 @@ const ConventionList = () => {
     const onClickNew = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(() => {
         dispatch((0,_actions_actions__WEBPACK_IMPORTED_MODULE_9__.setOpenDialogForConvention)(true));
     }, [dispatch]);
-    return ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, { children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], { variant: "h4", children: "\u6700\u8FD1\u306E\u30A4\u30D9\u30F3\u30C8" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], { children: (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], { "data-testid": "new-button", onClick: onClickNew, children: "\u65B0\u3057\u3044\u30A4\u30D9\u30F3\u30C8\u3092\u4F5C\u308B" }, void 0) }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], { "data-testid": "con-list", css: styles.root, children: rows }, void 0)] }, void 0));
+    return ((0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, { children: [(0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], { variant: "h4", children: "\u6700\u8FD1\u306E\u30A4\u30D9\u30F3\u30C8" }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], { children: (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], { "data-testid": "new-button", onClick: onClickNew, children: "\u65B0\u3057\u3044\u30A4\u30D9\u30F3\u30C8\u3092\u4F5C\u308B" }, void 0) }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], { "data-testid": "con-list", css: styles.root, children: rows }, void 0), (0,_emotion_react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_conventionDialog__WEBPACK_IMPORTED_MODULE_14__.ConventionDialog, { "data-testid": "convention-dialog", open: openDialog, onCommit: () => {
+                    /** */
+                }, onClose: () => {
+                    /** */
+                }, convention: {
+                    date: new Date(),
+                    id: '',
+                    note: '',
+                    place: '',
+                    title: '',
+                } }, void 0)] }, void 0));
 };
 
 
