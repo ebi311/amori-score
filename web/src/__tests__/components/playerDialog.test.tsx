@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/react-in-jsx-scope */
+import '@testing-library/jest-dom';
+import { cleanup, fireEvent } from '@testing-library/react';
 import { PlayerDialog } from '../../components/playerDialog';
 import { Player } from '../../controllers/player';
 import { customRender as render } from './test-utils';
-import { cleanup, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 
 const player1: Player = {
   name: 'プレイヤー１',

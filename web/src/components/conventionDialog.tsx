@@ -1,6 +1,5 @@
 import { DesktopDatePicker } from '@mui/lab';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -8,7 +7,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import React, { useCallback, useState } from 'react';
 import { Convention } from '../controllers/convention';
 
