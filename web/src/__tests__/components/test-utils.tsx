@@ -7,8 +7,11 @@ import { reducer } from '../../reducer';
 import { GlobalState } from '../../globalState';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import { LocalizationProvider } from '@mui/lab';
+import MockDate from 'mockdate';
 
 const theme = createTheme();
+
+MockDate.set(new Date('2022-01-02'));
 
 const testProvider =
   // eslint-disable-next-line react/display-name, @typescript-eslint/ban-types

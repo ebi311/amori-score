@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { Score } from './score';
 
 export type Convention = {
   id: string;
@@ -6,6 +7,8 @@ export type Convention = {
   date: Date;
   place: string;
   note: string;
+  scores: Score[];
+  courseCount: number;
 };
 
 export const createConvention = (): Convention => ({
@@ -14,4 +17,6 @@ export const createConvention = (): Convention => ({
   date: new Date(),
   place: '',
   note: '',
+  scores: [],
+  courseCount: 9,
 });

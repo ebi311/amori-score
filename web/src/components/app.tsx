@@ -23,14 +23,14 @@ export const App: React.FC = () => {
   }));
   return (
     <>
-      <HashRouter>
-        <Container>
+      <Container>
+        <HashRouter>
           <Routes>
             <Route path="/" element={<ConventionList />} />
             <Route path="/scores/:id" element={<PlayerList />} />
           </Routes>
-        </Container>
-      </HashRouter>
+        </HashRouter>
+      </Container>
     </>
   );
 };

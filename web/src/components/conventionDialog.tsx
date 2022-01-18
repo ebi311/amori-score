@@ -13,7 +13,6 @@ import React, { useCallback, useState } from 'react';
 import { Convention } from '../controllers/convention';
 
 type Props = DialogProps & {
-  // open: boolean;
   convention: Convention;
   onCommit: (con: Convention) => void;
   onClose: () => void;
@@ -85,7 +84,6 @@ export const ConventionDialog: React.FC<Props> = (props) => {
                 {...params}
                 data-testid="date-input"
                 error={errors.date}
-                // inputProps={{ 'data-id': 'date' }}
               />
             )}
             mask="____/__/__"
@@ -98,6 +96,14 @@ export const ConventionDialog: React.FC<Props> = (props) => {
             inputProps={{ 'data-id': 'place' }}
             error={errors.place}
           />
+          {/* <TextField
+            label="コース数"
+            data-testid="course-input"
+            value={convention.courseCount}
+            type="number"
+            inputProps={{ 'data-id': 'courseCount' }}
+            error={errors.courseCount}
+          /> */}
         </Stack>
       </DialogContent>
       <DialogActions>

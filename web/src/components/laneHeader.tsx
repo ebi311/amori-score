@@ -1,12 +1,14 @@
 import { Box, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { GlobalState } from '../globalState';
 import { useCommonStyles } from './commonStyles';
 
-export const LaneHeader: React.FC = () => {
-  const courseCount = useSelector<GlobalState>((a) => a.courseCount);
+type Props = {
+  courseCount: number;
+};
+
+export const LaneHeader: React.FC<Props> = (props) => {
   const theme = useTheme();
+  const { courseCount } = props;
   const { lane: styles } = useCommonStyles(theme);
   const courses = useMemo(() => {
     return [...Array(courseCount)].map((_, _i) => {

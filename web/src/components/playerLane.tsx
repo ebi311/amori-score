@@ -11,12 +11,12 @@ import { useCommonStyles } from './commonStyles';
 type Props = {
   index: number;
   score: Score;
+  courseCount: number;
   onChange: (score: Score, index: number) => void;
 };
 
 export const PlayerLane: React.FC<Props> = (props) => {
-  const courseCount = useSelector<GlobalState, number>((a) => a.courseCount);
-  const { score, index } = props;
+  const { score, index, courseCount } = props;
   const { player } = score;
   const theme = useTheme();
   const { lane: styles } = useCommonStyles(theme);

@@ -19,6 +19,8 @@ const render = (open = true) => {
         id: '001',
         note: '備考1',
         place: '場所1',
+        scores: [],
+        courseCount: 9,
       }}
       onClose={onClose}
       onCommit={onCommit}
@@ -100,6 +102,8 @@ test('登録ボタンを押す', () => {
     id: '001',
     note: '備考1',
     date: dayjs('2022-01-02').toDate(),
+    scores: [],
+    courseCount: 9,
   });
 });
 test('入力チェック', () => {

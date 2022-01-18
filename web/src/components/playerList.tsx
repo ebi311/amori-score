@@ -1,31 +1,48 @@
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { setCourseScore } from '../actions/actions';
+import { Convention, createConvention } from '../controllers/convention';
 import { Score } from '../controllers/score';
 import { GlobalState } from '../globalState';
 import { LaneHeader } from './laneHeader';
 import { PlayerLane } from './playerLane';
 
 export const PlayerList: React.FC = () => {
-  const { scores } = useSelector<GlobalState, GlobalState>((a) => a);
+  const conventions = useSelector<GlobalState, Convention[]>(
+    (a) => a.conventionList,
+  );
+  const { id } = useParams();
+  const { scores, courseCount } = useMemo(
+    () => conventions.find((a) => a.id === id) || createConvention(),
+    [conventions, id],
+  );
   const dispatch = useDispatch();
+  // パラメータが変更したときに、データを取り直す
+
   const onChange = useCallback(
     (score: Score, index: number) => {
-      dispatch(setCourseScore({ score, index }));
+      dispatch(setCourseScore({ conventionId: id || '', score, index }));
     },
-    [dispatch],
+    [dispatch, id],
   );
   const rows = useMemo(() => {
     return scores.map((s, i) => (
-      <PlayerLane key={i} index={i} score={s} onChange={onChange} />
+      <PlayerLane
+        key={i}
+        index={i}
+        score={s}
+        onChange={onChange}
+        courseCount={courseCount}
+      />
     ));
-  }, [onChange, scores]);
+  }, [courseCount, onChange, scores]);
   return (
     <>
       <Container maxWidth="lg">
-        <LaneHeader />
-        {rows}
+        <LaneHeader courseCount={courseCount} />
+        <Box data-testid="rows">{rows}</Box>
       </Container>
     </>
   );

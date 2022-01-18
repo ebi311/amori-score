@@ -2,16 +2,20 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { GlobalState, initGlobalState } from './globalState';
 import * as actions from './actions/actions';
 
-const defaultInit = initGlobalState();
-
 export const reducer = (partialState: Partial<GlobalState> = {}) => {
+  const defaultInit = initGlobalState();
   const initState = { ...defaultInit, ...partialState };
   return reducerWithInitialState(initState)
     .case(actions.setCourseScore, (state, payload) => {
       const newState = { ...state };
-      newState.scores = [...state.scores];
+      newState.conventionList = [...state.conventionList];
+      const convention = newState.conventionList.find(
+        (a) => a.id === payload.conventionId,
+      );
+      if (!convention) return state;
+      convention.scores = [...convention.scores];
       const { index, score } = payload;
-      newState.scores[index] = score;
+      convention.scores[index] = score;
       return newState;
     })
     .case(actions.setOpenDialogForPlayer, (state, payload) => {
@@ -21,7 +25,11 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
     })
     .case(actions.setOpenDialogForConvention, (state, payload) => ({
       ...state,
-      openConventionDialog: payload,
+      conventionDialog: { ...state.conventionDialog, open: payload },
+    }))
+    .case(actions.addConvention, (state, payload) => ({
+      ...state,
+      conventionList: [...state.conventionList, payload],
     }))
     .build();
 };

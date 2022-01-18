@@ -1,13 +1,15 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { fireEvent } from '@testing-library/react';
 import * as testing from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import { ConventionList } from '../../components/conventionList';
 import { Convention } from '../../controllers/convention';
 import { customRender as _render } from './test-utils';
-import MockDate from 'mockdate';
+import { mocked } from 'jest-mock';
+import nanoid from 'nanoid';
 
-MockDate.set(new Date('2022-01-02'));
+jest.mock('nanoid');
+mocked(nanoid).nanoid.mockReturnValue('a001');
 
 const DummyScore = () => {
   const params = useParams();
@@ -19,6 +21,8 @@ const conventions: Convention[] = [...Array(3)].map((_, i) => ({
   date: new Date(`2022-01-1${i}T00:00:00Z`),
   note: `びこう${i}`,
   place: `場所${i}`,
+  scores: [],
+  courseCount: 9,
 }));
 
 const render = () =>
@@ -49,7 +53,7 @@ test('新しいイベントを作成する', async () => {
   const [{ getByTestId }, store] = render();
   const newButton = getByTestId('new-button');
   fireEvent.click(newButton);
-  expect(store.getState().openConventionDialog).toBe(true);
+  expect(store.getState().conventionDialog.open).toBe(true);
   // ダイアログの表示確認
   const dialog = getByTestId('convention-dialog');
   const titleTextField = dialog.querySelector(
@@ -73,6 +77,11 @@ test('新しいイベントを作成する', async () => {
   // 登録後表示の確認
   const conList = getByTestId('con-list');
   expect(conList.childNodes.length).toBe(4);
+  expect(conList.childNodes[3].textContent).toBe(
+    'イベント９９2022-02-01 開催場所: 吉野公園',
+  );
+  fireEvent.click(conList.childNodes[3]);
+  expect(getByTestId('id').textContent).toBe('a001');
 });
 test('既存のイベントを開く', () => {
   const [{ getByTestId }] = render();

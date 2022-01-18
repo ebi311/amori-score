@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setOpenDialogForConvention } from '../actions/actions';
+import { addConvention, setOpenDialogForConvention } from '../actions/actions';
 import { Convention } from '../controllers/convention';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
@@ -31,10 +31,10 @@ export const ConventionList: React.FC = () => {
       }
     `,
   }));
-  const [conList, openDialog] = useSelector<
+  const [conList, convDialog] = useSelector<
     GlobalState,
-    [Convention[], boolean]
-  >((a) => [a.conventionList, a.openConventionDialog]);
+    [Convention[], GlobalState['conventionDialog']]
+  >((a) => [a.conventionList, a.conventionDialog]);
   const rows = useMemo(() => {
     return conList.map((con) => {
       const secondary = `${dayjs(con.date).format('YYYY-MM-DD')} 開催場所: ${
@@ -54,6 +54,14 @@ export const ConventionList: React.FC = () => {
   const onCloseDialog = useCallback(() => {
     dispatch(setOpenDialogForConvention(false));
   }, [dispatch]);
+  const onCommitConvDialog = useCallback(
+    (conv: Convention) => {
+      dispatch(addConvention(conv));
+      dispatch(setOpenDialogForConvention(false));
+    },
+    [dispatch],
+  );
+
   return (
     <>
       <Typography variant="h4">最近のイベント</Typography>
@@ -67,18 +75,10 @@ export const ConventionList: React.FC = () => {
       </List>
       <ConventionDialog
         data-testid="convention-dialog"
-        open={openDialog}
-        onCommit={() => {
-          /** */
-        }}
+        open={convDialog.open}
+        onCommit={onCommitConvDialog}
         onClose={onCloseDialog}
-        convention={{
-          date: new Date(),
-          id: '',
-          note: '',
-          place: '',
-          title: '',
-        }}
+        convention={convDialog.convention}
       />
     </>
   );
