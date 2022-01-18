@@ -12,6 +12,7 @@
     "jest.autoRun": {
       "watch": false,
       "onSave": "test-src-file"
-    }
+    },
+    "liveServer.settings.multiRootWorkspaceName": "web"
   }
 }

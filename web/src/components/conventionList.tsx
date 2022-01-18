@@ -12,8 +12,8 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addConvention, setOpenDialogForConvention } from '../actions/actions';
-import { Convention } from '../controllers/convention';
+import { addConvention, setDialogForConvention } from '../actions/actions';
+import { Convention, createConvention } from '../controllers/convention';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
 import { ConventionDialog } from './conventionDialog';
@@ -49,15 +49,16 @@ export const ConventionList: React.FC = () => {
   }, [conList]);
   const dispatch = useDispatch();
   const onClickNew = useCallback(() => {
-    dispatch(setOpenDialogForConvention(true));
+    dispatch(
+      setDialogForConvention({ open: true, convention: createConvention() }),
+    );
   }, [dispatch]);
   const onCloseDialog = useCallback(() => {
-    dispatch(setOpenDialogForConvention(false));
+    dispatch(setDialogForConvention({ open: false }));
   }, [dispatch]);
   const onCommitConvDialog = useCallback(
     (conv: Convention) => {
       dispatch(addConvention(conv));
-      dispatch(setOpenDialogForConvention(false));
     },
     [dispatch],
   );

@@ -74,6 +74,10 @@ test('新しいイベントを作成する', async () => {
   fireEvent.change(placeTextField, { target: { value: '吉野公園' } });
   const commitButton = testing.getByTestId(dialog, 'commit-button');
   fireEvent.click(commitButton);
+  // 再度 新規作成ボタンを押したら、空で表示する
+  fireEvent.click(getByTestId('new-button'));
+  expect(getByTestId('title-input').querySelector('input')?.value).toBe('');
+  fireEvent.keyPress(dialog, { key: 'Esc' });
   // 登録後表示の確認
   const conList = getByTestId('con-list');
   expect(conList.childNodes.length).toBe(4);

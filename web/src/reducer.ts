@@ -23,9 +23,9 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       newState.openPlayerDialog = payload;
       return newState;
     })
-    .case(actions.setOpenDialogForConvention, (state, payload) => ({
+    .case(actions.setDialogForConvention, (state, payload) => ({
       ...state,
-      conventionDialog: { ...state.conventionDialog, open: payload },
+      conventionDialog: { ...state.conventionDialog, ...payload },
     }))
     .case(actions.addConvention, (state, payload) => ({
       ...state,

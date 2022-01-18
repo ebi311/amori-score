@@ -3,7 +3,13 @@ import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { ConventionDialog } from '../../components/conventionDialog';
+import { createConvention } from '../../controllers/convention';
 import { customRender as _render } from './test-utils';
+import nanoid from 'nanoid';
+import { mocked } from 'jest-mock';
+
+jest.mock('nanoid');
+mocked(nanoid).nanoid.mockReturnValue('0001');
 
 let onClose: jest.Mock;
 let onCommit: jest.Mock;

@@ -9,7 +9,7 @@ import {
   TextField,
 } from '@mui/material';
 import { Dayjs } from 'dayjs';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Convention } from '../controllers/convention';
 
 type Props = DialogProps & {
@@ -34,6 +34,9 @@ export const ConventionDialog: React.FC<Props> = (props) => {
     ...dialogProps
   } = props;
   const [convention, setConvention] = useState(initConvention);
+  useEffect(() => {
+    setConvention(initConvention);
+  }, [initConvention]);
   const [errors, setErrors] = useState<Errors>({});
   const onChangeString = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,12 +61,16 @@ export const ConventionDialog: React.FC<Props> = (props) => {
   const onClickCommitButton = useCallback(() => {
     if (hasError(errors)) return;
     onCommit(convention);
-  }, [convention, errors, onCommit]);
+    onClose();
+  }, [convention, errors, onClose, onCommit]);
   const onClickCancelButton = useCallback(() => {
     onClose();
   }, [onClose]);
+  const onDialogClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
   return (
-    <Dialog {...dialogProps}>
+    <Dialog {...dialogProps} onClose={onDialogClose}>
       <DialogContent data-testid="container">
         <Stack spacing={2}>
           <TextField
