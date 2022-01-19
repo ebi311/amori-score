@@ -8,12 +8,12 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Player } from '../controllers/player';
+import { GlobalState } from '../globalState';
 
 type Props = {
-  open: boolean;
-  player: Player;
   onCommit: (player: Player) => void;
   onClose: () => void;
 };
@@ -25,8 +25,13 @@ const styles = {
 };
 
 export const PlayerDialog: React.FC<Props> = (props) => {
-  const { open, player: _player, onCommit, onClose } = props;
+  const { onCommit, onClose } = props;
+  const { open, player: _player } = useSelector<
+    GlobalState,
+    GlobalState['playerDialog']
+  >((s) => s.playerDialog);
   const [player, setPlayer] = useState(_player);
+  useEffect(() => setPlayer(_player), [_player]);
   const [errors, setErrors] = useState<{ name: boolean; age: boolean }>({
     name: false,
     age: false,
@@ -63,7 +68,7 @@ export const PlayerDialog: React.FC<Props> = (props) => {
     onClose();
   }, [onClose]);
   return (
-    <Dialog open={open} data-testid="dialog">
+    <Dialog open={open} data-testid="player-dialog" onClose={onCancel}>
       <DialogTitle>参加者</DialogTitle>
       <DialogContent
         css={css`
@@ -78,6 +83,9 @@ export const PlayerDialog: React.FC<Props> = (props) => {
             data-testid="name-textbox"
             onChange={onChange}
             error={errors.name}
+            inputProps={{
+              'data-testid': 'name-input',
+            }}
           />
         </Box>
         <Box css={styles.formRow}>
@@ -89,6 +97,9 @@ export const PlayerDialog: React.FC<Props> = (props) => {
             onChange={onChange}
             type="number"
             error={errors.age}
+            inputProps={{
+              'data-testid': 'age-input',
+            }}
           />
         </Box>
       </DialogContent>

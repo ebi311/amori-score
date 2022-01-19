@@ -1,8 +1,8 @@
+import { fireEvent, waitFor } from '@testing-library/react';
+import React from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { SideMenu } from '../../components/sideMenu';
 import { customRender as render } from './test-utils';
-import React from 'react';
-import { fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Router, Routes } from 'react-router-dom';
 
 test('プレイヤー追加ボタンクリック時の処理', async () => {
   const [{ getByTestId }, store] = render(
@@ -14,7 +14,7 @@ test('プレイヤー追加ボタンクリック時の処理', async () => {
   expect(addButton).toBeTruthy();
   fireEvent.click(addButton);
   const state = store.getState();
-  await waitFor(() => expect(state.openPlayerDialog).toBe(true));
+  await waitFor(() => expect(state.playerDialog.open).toBe(true));
 });
 test('順位をページに遷移するボタンクリック時の処理', () => {
   const [{ getByTestId, getByText }] = render(

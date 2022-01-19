@@ -77,7 +77,7 @@ test('新しいイベントを作成する', async () => {
   // 再度 新規作成ボタンを押したら、空で表示する
   fireEvent.click(getByTestId('new-button'));
   expect(getByTestId('title-input').querySelector('input')?.value).toBe('');
-  fireEvent.keyPress(dialog, { key: 'Esc' });
+  fireEvent.keyDown(dialog, { key: 'Esc' });
   // 登録後表示の確認
   const conList = getByTestId('con-list');
   expect(conList.childNodes.length).toBe(4);

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/react-in-jsx-scope */
 import '@testing-library/jest-dom';
-import { cleanup, fireEvent } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import { PlayerDialog } from '../../components/playerDialog';
 import { Player } from '../../controllers/player';
 import { customRender as render } from './test-utils';
@@ -17,36 +17,23 @@ const player2: Player = {
 
 test('open に false を渡すと、ダイアログを表示しない。', () => {
   const [{ queryByTestId }] = render(
-    <PlayerDialog
-      open={false}
-      player={player1}
-      onCommit={() => undefined}
-      onClose={() => undefined}
-    />,
+    <PlayerDialog onCommit={() => undefined} onClose={() => undefined} />,
   );
-  expect(!queryByTestId('dialog')).toBe(true);
+  expect(!queryByTestId('player-dialog')).toBe(true);
 });
 test('open に true を渡すと、ダイアログを表示する。', () => {
   const [{ queryByTestId }] = render(
-    <PlayerDialog
-      open={true}
-      player={player1}
-      onCommit={() => {}}
-      onClose={() => undefined}
-    />,
+    <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
+    { playerDialog: { open: true, player: player1 } },
   );
-  expect(queryByTestId('dialog')).toBeTruthy();
+  expect(queryByTestId('player-dialog')).toBeTruthy();
 });
 test('プロパティで渡した Player の情報を表示する。', () => {
   [player1, player2].forEach((player) => {
     cleanup();
     const [{ getByTestId }] = render(
-      <PlayerDialog
-        open={true}
-        player={player}
-        onCommit={() => {}}
-        onClose={() => undefined}
-      />,
+      <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
+      { playerDialog: { open: true, player } },
     );
     const name = getByTestId('name-textbox').querySelector('input');
     expect(name?.value).toBe(player.name);
@@ -56,12 +43,8 @@ test('プロパティで渡した Player の情報を表示する。', () => {
 });
 test('名前と年齢を変更する。', () => {
   const [{ getByTestId }] = render(
-    <PlayerDialog
-      open={true}
-      player={player1}
-      onCommit={() => {}}
-      onClose={() => undefined}
-    />,
+    <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
+    { playerDialog: { open: true, player: player1 } },
   );
   let name = getByTestId('name-textbox').querySelector(
     'input',
@@ -86,12 +69,8 @@ test('保存ボタンを押すと、プロパティの onCommit を実行する�
     expect(player.age).toBe(31);
   });
   const [{ getByTestId }] = render(
-    <PlayerDialog
-      open={true}
-      player={player1}
-      onCommit={onChange}
-      onClose={() => undefined}
-    />,
+    <PlayerDialog onCommit={onChange} onClose={() => undefined} />,
+    { playerDialog: { open: true, player: player1 } },
   );
   let name = getByTestId('name-textbox').querySelector(
     'input',
@@ -110,26 +89,28 @@ test('保存ボタンを押すと、プロパティの onCommit を実行する�
 test('キャンセルボタンを押すと、プロパティの onClose を実行する。', () => {
   const onClose = jest.fn();
   const [{ getByTestId }] = render(
-    <PlayerDialog
-      open={true}
-      player={player1}
-      onCommit={() => {}}
-      onClose={onClose}
-    />,
+    <PlayerDialog onCommit={() => {}} onClose={onClose} />,
+    { playerDialog: { open: true, player: player1 } },
   );
   const closeButton = getByTestId('cancel-button');
   fireEvent.click(closeButton);
   expect(onClose).toBeCalled();
 });
+test('ESCキーを押すと、プロパティの onClose を実行する。', async () => {
+  const onClose = jest.fn();
+  const [{ getByTestId }] = render(
+    <PlayerDialog onCommit={() => {}} onClose={onClose} />,
+    { playerDialog: { open: true, player: player1 } },
+  );
+  const dialog = getByTestId('player-dialog');
+  fireEvent.keyDown(dialog, { key: 'Esc' });
+  await waitFor(() => expect(onClose).toBeCalled());
+});
 test('入力チェック', async () => {
   const onChange = jest.fn();
   const [{ getByTestId }] = render(
-    <PlayerDialog
-      open={true}
-      player={player1}
-      onCommit={onChange}
-      onClose={() => undefined}
-    />,
+    <PlayerDialog onCommit={onChange} onClose={() => undefined} />,
+    { playerDialog: { open: true, player: player1 } },
   );
   let name: HTMLElement = getByTestId('name-textbox');
   let age: HTMLElement = getByTestId('age-textbox');

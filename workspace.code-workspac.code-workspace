@@ -11,7 +11,7 @@
     "jest.disabledWorkspaceFolders": ["electron"],
     "jest.autoRun": {
       "watch": false,
-      "onSave": "test-src-file"
+      "onSave": "test-file"
     },
     "liveServer.settings.multiRootWorkspaceName": "web"
   }

@@ -25,7 +25,7 @@ const render = (id = '001') =>
         {
           id: '001',
           note: '備考',
-          place: '場所',
+          place: '場所001',
           title: 'イベント００１',
           date: new Date('2022-01-01T00:00:00+0900'),
           scores: testData(5),
@@ -44,7 +44,11 @@ const render = (id = '001') =>
     },
   );
 test('ステートのリストを表示する', () => {
-  const [{ getAllByTestId, getByText }] = render();
+  const [{ getAllByTestId, getByText, getByTestId }] = render();
+  expect(getByTestId('title').textContent).toBe('イベント００１');
+  expect(getByTestId('subtitle').textContent).toBe(
+    '2022年1月1日 開催場所： 場所001',
+  );
   expect(getAllByTestId(/score-row-/).length).toBe(5);
   [...Array(5)].forEach((_, i) => {
     expect(getByText(new RegExp(`プレイヤー${i}`))).toBeTruthy();
@@ -64,4 +68,29 @@ test('パスパラメータに応じて、データを切り替える', () => {
   const [{ getByTestId }] = render('002');
   const rows = getByTestId('rows');
   expect(rows.childNodes.length).toBe(6);
+});
+test('プレイヤーを登録する', async () => {
+  const [{ getByTestId, queryByTestId, queryAllByTestId }] = render();
+  expect(queryAllByTestId(/score-row-/).length).toBe(5);
+  fireEvent.click(getByTestId('add-player'));
+  expect(queryByTestId('player-dialog')).toBeTruthy();
+  fireEvent.change(getByTestId('name-input'), {
+    target: { value: 'プレイヤー９' },
+  });
+  fireEvent.change(getByTestId('age-input'), { target: { value: '50' } });
+  fireEvent.click(getByTestId('save-button'));
+  await waitFor(() => expect(queryByTestId('player-dialog')).toBeFalsy());
+  // プレイヤーが増えている
+  expect(queryAllByTestId(/score-row-/).length).toBe(6);
+  // 再度開くと、テキストボックスがクリアされていること。
+  fireEvent.click(getByTestId('add-player'));
+  expect((getByTestId('name-input') as HTMLInputElement).value).toBe('');
+});
+test('プレイヤーダイアログを、キャンセルボタンで閉じる', async () => {
+  const [{ getByTestId, queryByTestId, queryAllByTestId }] = render();
+  expect(queryAllByTestId(/score-row-/).length).toBe(5);
+  fireEvent.click(getByTestId('add-player'));
+  await waitFor(() => expect(queryByTestId('player-dialog')).toBeTruthy());
+  fireEvent.click(getByTestId('cancel-button'));
+  await waitFor(() => expect(queryByTestId('player-dialog')).toBeFalsy());
 });

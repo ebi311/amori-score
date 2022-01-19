@@ -1,6 +1,7 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { GlobalState, initGlobalState } from './globalState';
 import * as actions from './actions/actions';
+import { createScore } from './controllers/score';
 
 export const reducer = (partialState: Partial<GlobalState> = {}) => {
   const defaultInit = initGlobalState();
@@ -18,9 +19,9 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       convention.scores[index] = score;
       return newState;
     })
-    .case(actions.setOpenDialogForPlayer, (state, payload) => {
+    .case(actions.setDialogForPlayer, (state, payload) => {
       const newState = { ...state };
-      newState.openPlayerDialog = payload;
+      newState.playerDialog = { ...state.playerDialog, ...payload };
       return newState;
     })
     .case(actions.setDialogForConvention, (state, payload) => ({
@@ -31,5 +32,17 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       ...state,
       conventionList: [...state.conventionList, payload],
     }))
+    .case(actions.addPlayer, (state, payload) => {
+      const conv = state.conventionList.find(
+        (c) => c.id === payload.conventionId,
+      );
+      if (!conv) return state;
+      conv.scores = [...conv.scores, createScore(payload.player)];
+      const newConvList = [
+        conv,
+        ...state.conventionList.filter((c) => c.id !== payload.conventionId),
+      ];
+      return { ...state, conventionList: newConvList };
+    })
     .build();
 };

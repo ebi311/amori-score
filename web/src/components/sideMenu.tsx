@@ -8,7 +8,7 @@ import {
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setOpenDialogForPlayer } from '../actions/actions';
+import { setDialogForPlayer } from '../actions/actions';
 import AddIcon from '@mui/icons-material/Add';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -20,7 +20,7 @@ const iconCss = css`
 export const SideMenu: React.FC = () => {
   const dispatch = useDispatch();
   const clickAddPlayer = useCallback(() => {
-    dispatch(setOpenDialogForPlayer(true));
+    dispatch(setDialogForPlayer({ open: true }));
   }, [dispatch]);
 
   return (
