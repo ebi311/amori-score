@@ -118,10 +118,12 @@ test('入力チェック', () => {
   let titleInput = getByTestId('title-input');
   let dateInput = getByTestId('date-input');
   let placeInput = getByTestId('place-input');
+  let courseInput = getByTestId('course-count');
   const reGet = () => {
     titleInput = getByTestId('title-input');
     dateInput = getByTestId('date-input');
     placeInput = getByTestId('place-input');
+    courseInput = getByTestId('course-count');
   };
   expect(titleInput.querySelector('label')).toHaveStyle({
     color: theme.palette.text.secondary,
@@ -145,6 +147,12 @@ test('入力チェック', () => {
     target: { value: 'not date' },
   });
   expect(dateInput.querySelector('label')).toHaveStyle({
+    color: theme.palette.error.main,
+  });
+  fireEvent.change(courseInput.querySelector('input') as HTMLInputElement, {
+    target: { value: '' },
+  });
+  expect(courseInput.querySelector('label')).toHaveStyle({
     color: theme.palette.error.main,
   });
 });

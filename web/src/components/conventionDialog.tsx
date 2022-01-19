@@ -58,6 +58,15 @@ export const ConventionDialog: React.FC<Props> = (props) => {
     },
     [convention, errors],
   );
+  const onChangeNumber = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
+      const count = Number(value) || -1;
+      setConvention({ ...convention, courseCount: count });
+      setErrors({ ...errors, courseCount: count < 1 });
+    },
+    [convention, errors],
+  );
   const onClickCommitButton = useCallback(() => {
     if (hasError(errors)) return;
     onCommit(convention);
@@ -103,14 +112,15 @@ export const ConventionDialog: React.FC<Props> = (props) => {
             inputProps={{ 'data-id': 'place' }}
             error={errors.place}
           />
-          {/* <TextField
+          <TextField
             label="コース数"
-            data-testid="course-input"
-            value={convention.courseCount}
+            data-testid="course-count"
+            value={convention.courseCount < 1 ? '' : convention.courseCount}
             type="number"
             inputProps={{ 'data-id': 'courseCount' }}
             error={errors.courseCount}
-          /> */}
+            onChange={onChangeNumber}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -46,7 +46,9 @@ test('イベントの一覧を表示する', () => {
     const primary = child.querySelector('.MuiListItemText-primary');
     const secondary = child.querySelector('.MuiListItemText-secondary');
     expect(primary?.textContent).toBe(`イベント${i}`);
-    expect(secondary?.textContent).toBe(`2022-01-1${i} 開催場所: 場所${i}`);
+    expect(secondary?.textContent).toBe(
+      `2022-01-1${i} 開催場所: 場所${i} コース数: 9`,
+    );
   });
 });
 test('新しいイベントを作成する', async () => {
@@ -68,10 +70,15 @@ test('新しいイベントを作成する', async () => {
     '[data-id=place]',
   ) as HTMLInputElement;
   expect(placeTextField?.value).toBe('');
+  const courseCount = getByTestId('course-count').querySelector(
+    'input',
+  ) as HTMLInputElement;
+  expect(courseCount.value).toBe('9');
   // ダイアログの入力
   fireEvent.change(titleTextField, { target: { value: 'イベント９９' } });
   fireEvent.change(datePicker, { target: { value: '2022/02/01' } });
   fireEvent.change(placeTextField, { target: { value: '吉野公園' } });
+  fireEvent.change(courseCount, { target: { value: '10' } });
   const commitButton = testing.getByTestId(dialog, 'commit-button');
   fireEvent.click(commitButton);
   // 再度 新規作成ボタンを押したら、空で表示する
@@ -82,7 +89,7 @@ test('新しいイベントを作成する', async () => {
   const conList = getByTestId('con-list');
   expect(conList.childNodes.length).toBe(4);
   expect(conList.childNodes[3].textContent).toBe(
-    'イベント９９2022-02-01 開催場所: 吉野公園',
+    'イベント９９2022-02-01 開催場所: 吉野公園 コース数: 10',
   );
   fireEvent.click(conList.childNodes[3]);
   expect(getByTestId('id').textContent).toBe('a001');

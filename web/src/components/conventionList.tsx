@@ -39,7 +39,7 @@ export const ConventionList: React.FC = () => {
     return conList.map((con) => {
       const secondary = `${dayjs(con.date).format('YYYY-MM-DD')} 開催場所: ${
         con.place
-      }`;
+      } コース数: ${con.courseCount}`;
       return (
         <ListItemButton key={con.id} component={Link} to={`/scores/${con.id}`}>
           <ListItemText primary={con.title} secondary={secondary} />
