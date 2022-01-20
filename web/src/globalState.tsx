@@ -18,7 +18,7 @@ export const initGlobalState = (): GlobalState => ({
   playerDialog: {
     open: false,
     player: {
-      age: 40,
+      age: -1,
       name: '',
     },
   },

@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, css, Grid, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import { Convention, createConvention } from '../controllers/convention';
 import { Player } from '../controllers/player';
 import { Score } from '../controllers/score';
 import { GlobalState } from '../globalState';
+import { useStyles } from './commonStyles';
 import { LaneHeader } from './laneHeader';
 import { PlayerDialog } from './playerDialog';
 import { PlayerLane } from './playerLane';
@@ -21,6 +22,19 @@ export const PlayerList: React.FC = () => {
   const conventions = useSelector<GlobalState, Convention[]>(
     (a) => a.conventionList,
   );
+  const styles = useStyles((theme) => ({
+    sideMenu: css`
+      border-radius: 5px;
+      border: 1px solid ${theme.palette.primary.main};
+      background-color: ${theme.palette.background.paper};
+      & .MuiListItemButton-root {
+        border-radius: 5px;
+        &:hover {
+          background-color: ${theme.palette.action.focus};
+        }
+      }
+    `,
+  }));
   const { id } = useParams();
   const { scores, courseCount, ...convention } = useMemo(
     () => conventions.find((a) => a.id === id) || createConvention(),
@@ -60,23 +74,27 @@ export const PlayerList: React.FC = () => {
     dispatch(setDialogForPlayer({ open: false }));
   }, [dispatch]);
   return (
-    <>
-      <SideMenu />
-      <Container maxWidth="lg">
-        <Typography variant="h4" data-testid="title">
-          {convention.title}
-        </Typography>
-        <Typography variant="subtitle1" data-testid="subtitle">
-          {dayjs(convention.date).format('YYYY年M月D日')} 開催場所&#xFF1A;{' '}
-          {convention.place}
-        </Typography>
-        <LaneHeader courseCount={courseCount} />
-        <Box data-testid="rows">{rows}</Box>
-      </Container>
-      <PlayerDialog
-        onCommit={onCommitPlayerDialog}
-        onClose={onClosePlayerDialog}
-      />
-    </>
+    <Grid container>
+      <Grid item xs="auto" css={styles.sideMenu}>
+        <SideMenu />
+      </Grid>
+      <Grid item xs>
+        <Container maxWidth="lg">
+          <Typography variant="h4" data-testid="title">
+            {convention.title}
+          </Typography>
+          <Typography variant="subtitle1" data-testid="subtitle">
+            {dayjs(convention.date).format('YYYY年M月D日')} 開催場所&#xFF1A;{' '}
+            {convention.place}
+          </Typography>
+          <LaneHeader courseCount={courseCount} />
+          <Box data-testid="rows">{rows}</Box>
+        </Container>
+        <PlayerDialog
+          onCommit={onCommitPlayerDialog}
+          onClose={onClosePlayerDialog}
+        />
+      </Grid>
+    </Grid>
   );
 };

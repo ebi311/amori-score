@@ -52,3 +52,6 @@ test('スコアを変更したらコールバック関数を実行する', () =>
   const cell3 = getByTestId('0-course-3') as HTMLInputElement;
   waitFor(() => expect(cell3.value).toBe('1'));
 });
+
+test.todo('プレイヤーを編集する。');
+test.todo('プレイヤーを削除する。');

@@ -100,3 +100,6 @@ test('既存のイベントを開く', () => {
   fireEvent.click(row);
   expect(getByTestId('id').textContent).toBe('000');
 });
+
+test('イベントを編集する。');
+test('イベントを削除する。');
