@@ -1,4 +1,4 @@
-import { Convention, createConvention } from './controllers/convention';
+import { Competition, createCompetition } from './controllers/competition';
 import { Player } from './controllers/player';
 import { Score } from './controllers/score';
 
@@ -7,10 +7,10 @@ export type GlobalState = {
     open: boolean;
     player: Player;
   };
-  conventionList: Convention[];
-  conventionDialog: {
+  competitionList: Competition[];
+  competitionDialog: {
     open: boolean;
-    convention: Convention;
+    competition: Competition;
   };
 };
 
@@ -22,9 +22,9 @@ export const initGlobalState = (): GlobalState => ({
       name: '',
     },
   },
-  conventionList: [],
-  conventionDialog: {
+  competitionList: [],
+  competitionDialog: {
     open: false,
-    convention: createConvention(),
+    competition: createCompetition(),
   },
 });

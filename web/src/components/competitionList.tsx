@@ -12,13 +12,13 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addConvention, setDialogForConvention } from '../actions/actions';
-import { Convention, createConvention } from '../controllers/convention';
+import { addCompetition, setDialogForCompetition } from '../actions/actions';
+import { Competition, createCompetition } from '../controllers/competition';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
-import { ConventionDialog } from './conventionDialog';
+import { CompetitionDialog } from './competitionDialog';
 
-export const ConventionList: React.FC = () => {
+export const CompetitionList: React.FC = () => {
   const styles = useStyles((theme: Theme) => ({
     root: css`
       & .MuiListItemButton-root {
@@ -31,10 +31,10 @@ export const ConventionList: React.FC = () => {
       }
     `,
   }));
-  const [conList, convDialog] = useSelector<
+  const [conList, compeDialog] = useSelector<
     GlobalState,
-    [Convention[], GlobalState['conventionDialog']]
-  >((a) => [a.conventionList, a.conventionDialog]);
+    [Competition[], GlobalState['competitionDialog']]
+  >((a) => [a.competitionList, a.competitionDialog]);
   const rows = useMemo(() => {
     return conList.map((con) => {
       const secondary = `${dayjs(con.date).format('YYYY-MM-DD')} 開催場所: ${
@@ -50,19 +50,18 @@ export const ConventionList: React.FC = () => {
   const dispatch = useDispatch();
   const onClickNew = useCallback(() => {
     dispatch(
-      setDialogForConvention({ open: true, convention: createConvention() }),
+      setDialogForCompetition({ open: true, competition: createCompetition() }),
     );
   }, [dispatch]);
   const onCloseDialog = useCallback(() => {
-    dispatch(setDialogForConvention({ open: false }));
+    dispatch(setDialogForCompetition({ open: false }));
   }, [dispatch]);
-  const onCommitConvDialog = useCallback(
-    (conv: Convention) => {
-      dispatch(addConvention(conv));
+  const onCommitCompeDialog = useCallback(
+    (compe: Competition) => {
+      dispatch(addCompetition(compe));
     },
     [dispatch],
   );
-
   return (
     <>
       <Typography variant="h4">最近のイベント</Typography>
@@ -74,12 +73,10 @@ export const ConventionList: React.FC = () => {
       <List data-testid="con-list" css={styles.root}>
         {rows}
       </List>
-      <ConventionDialog
-        data-testid="convention-dialog"
-        open={convDialog.open}
-        onCommit={onCommitConvDialog}
+      <CompetitionDialog
+        data-testid="competition-dialog"
+        onCommit={onCommitCompeDialog}
         onClose={onCloseDialog}
-        convention={convDialog.convention}
       />
     </>
   );

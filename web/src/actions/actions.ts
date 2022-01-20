@@ -1,5 +1,5 @@
 import { actionCreatorFactory } from 'typescript-fsa';
-import { Convention } from '../controllers/convention';
+import { Competition } from '../controllers/competition';
 import { Player } from '../controllers/player';
 import { Score } from '../controllers/score';
 import { GlobalState } from '../globalState';
@@ -7,17 +7,21 @@ import { GlobalState } from '../globalState';
 const ac = actionCreatorFactory('actions');
 
 export const setCourseScore =
-  ac<{ conventionId: string; score: Score; index: number }>('set-course-score');
+  ac<{ competitionId: string; score: Score; index: number }>(
+    'set-course-score',
+  );
 
 export const setDialogForPlayer = ac<Partial<GlobalState['playerDialog']>>(
   'set-open-dialog-for-player',
 );
 
-export const setDialogForConvention = ac<
-  Partial<GlobalState['conventionDialog']>
->('set-open-dialog-for-convention');
+export const setDialogForCompetition = ac<
+  Partial<GlobalState['competitionDialog']>
+>('set-open-dialog-for-competition');
 
-export const addConvention = ac<Convention>('add-convention');
+export const addCompetition = ac<Competition>('add-competition');
+
+export const updateCompetition = ac<Competition>('update-competition');
 
 export const addPlayer =
-  ac<{ player: Player; conventionId: string }>('add-player');
+  ac<{ player: Player; competitionId: string }>('add-player');

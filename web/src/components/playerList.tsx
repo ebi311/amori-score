@@ -1,4 +1,4 @@
-import { Box, Container, css, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Container, css, Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,20 +7,22 @@ import {
   addPlayer,
   setCourseScore,
   setDialogForPlayer,
+  updateCompetition,
 } from '../actions/actions';
-import { Convention, createConvention } from '../controllers/convention';
+import { Competition, createCompetition } from '../controllers/competition';
 import { Player } from '../controllers/player';
 import { Score } from '../controllers/score';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
+import { CompetitionDialog } from './competitionDialog';
 import { LaneHeader } from './laneHeader';
 import { PlayerDialog } from './playerDialog';
 import { PlayerLane } from './playerLane';
 import { SideMenu } from './sideMenu';
 
 export const PlayerList: React.FC = () => {
-  const conventions = useSelector<GlobalState, Convention[]>(
-    (a) => a.conventionList,
+  const competitions = useSelector<GlobalState, Competition[]>(
+    (a) => a.competitionList,
   );
   const styles = useStyles((theme) => ({
     sideMenu: css`
@@ -36,16 +38,17 @@ export const PlayerList: React.FC = () => {
     `,
   }));
   const { id } = useParams();
-  const { scores, courseCount, ...convention } = useMemo(
-    () => conventions.find((a) => a.id === id) || createConvention(),
-    [conventions, id],
+  const competition = useMemo(
+    () => competitions.find((a) => a.id === id) || createCompetition(),
+    [competitions, id],
   );
+  const { scores, courseCount } = competition;
   const dispatch = useDispatch();
   // パラメータが変更したときに、データを取り直す
 
   const onChange = useCallback(
     (score: Score, index: number) => {
-      dispatch(setCourseScore({ conventionId: id || '', score, index }));
+      dispatch(setCourseScore({ competitionId: id || '', score, index }));
     },
     [dispatch, id],
   );
@@ -63,7 +66,7 @@ export const PlayerList: React.FC = () => {
   const onCommitPlayerDialog = useCallback(
     (player: Player) => {
       if (!id) return;
-      dispatch(addPlayer({ player, conventionId: id }));
+      dispatch(addPlayer({ player, competitionId: id }));
       dispatch(
         setDialogForPlayer({ open: false, player: { name: '', age: -1 } }),
       );
@@ -73,28 +76,37 @@ export const PlayerList: React.FC = () => {
   const onClosePlayerDialog = useCallback(() => {
     dispatch(setDialogForPlayer({ open: false }));
   }, [dispatch]);
+  const onCommitCompeDialog = useCallback(
+    (compe: Competition) => {
+      dispatch(updateCompetition(compe));
+    },
+    [dispatch],
+  );
   return (
-    <Grid container>
-      <Grid item xs="auto" css={styles.sideMenu}>
-        <SideMenu />
+    <>
+      <Grid container>
+        <Grid item xs="auto" css={styles.sideMenu}>
+          <SideMenu competition={competition} />
+        </Grid>
+        <Grid item xs>
+          <Container maxWidth="lg">
+            <Typography variant="h4" data-testid="title">
+              {competition.title}
+            </Typography>
+            <Typography variant="subtitle1" data-testid="subtitle">
+              {dayjs(competition.date).format('YYYY年M月D日')} 開催場所&#xFF1A;{' '}
+              {competition.place}
+            </Typography>
+            <LaneHeader courseCount={courseCount} />
+            <Box data-testid="rows">{rows}</Box>
+          </Container>
+        </Grid>
       </Grid>
-      <Grid item xs>
-        <Container maxWidth="lg">
-          <Typography variant="h4" data-testid="title">
-            {convention.title}
-          </Typography>
-          <Typography variant="subtitle1" data-testid="subtitle">
-            {dayjs(convention.date).format('YYYY年M月D日')} 開催場所&#xFF1A;{' '}
-            {convention.place}
-          </Typography>
-          <LaneHeader courseCount={courseCount} />
-          <Box data-testid="rows">{rows}</Box>
-        </Container>
-        <PlayerDialog
-          onCommit={onCommitPlayerDialog}
-          onClose={onClosePlayerDialog}
-        />
-      </Grid>
-    </Grid>
+      <PlayerDialog
+        onCommit={onCommitPlayerDialog}
+        onClose={onClosePlayerDialog}
+      />
+      <CompetitionDialog onCommit={onCommitCompeDialog} onClose={() => ''} />
+    </>
   );
 };

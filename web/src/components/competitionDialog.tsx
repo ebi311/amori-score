@@ -10,15 +10,16 @@ import {
 } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Convention } from '../controllers/convention';
+import { Competition } from '../controllers/competition';
+import { GlobalState } from '../globalState';
+import { useSelector } from 'react-redux';
 
-type Props = DialogProps & {
-  convention: Convention;
-  onCommit: (con: Convention) => void;
+type Props = Omit<DialogProps, 'open'> & {
+  onCommit: (con: Competition) => void;
   onClose: () => void;
 };
 
-type Errors = Partial<{ [key in keyof Convention]: boolean }>;
+type Errors = Partial<{ [key in keyof Competition]: boolean }>;
 const hasError = (errors: Errors) => {
   return Object.entries(errors).some(([, val]) => {
     if (typeof val !== 'boolean') return false;
@@ -26,26 +27,25 @@ const hasError = (errors: Errors) => {
   });
 };
 
-export const ConventionDialog: React.FC<Props> = (props) => {
-  const {
-    convention: initConvention,
-    onClose,
-    onCommit,
-    ...dialogProps
-  } = props;
-  const [convention, setConvention] = useState(initConvention);
+export const CompetitionDialog: React.FC<Props> = (props) => {
+  const { competition: initCompetition, open } = useSelector<
+    GlobalState,
+    GlobalState['competitionDialog']
+  >((s) => s.competitionDialog);
+  const { onClose, onCommit, ...dialogProps } = props;
+  const [competition, setCompetition] = useState(initCompetition);
   useEffect(() => {
-    setConvention(initConvention);
-  }, [initConvention]);
+    setCompetition(initCompetition);
+  }, [initCompetition]);
   const [errors, setErrors] = useState<Errors>({});
   const onChangeString = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const field = e.currentTarget.dataset['id'] as 'title' | 'place';
       const { value } = e.currentTarget;
-      setConvention({ ...convention, [field]: value });
+      setCompetition({ ...competition, [field]: value });
       setErrors({ ...errors, [field]: value.trim() === '' });
     },
-    [convention, errors],
+    [competition, errors],
   );
   const onChangeDate = useCallback(
     (date: Dayjs | null) => {
@@ -53,25 +53,25 @@ export const ConventionDialog: React.FC<Props> = (props) => {
         setErrors({ ...errors, date: true });
         return;
       }
-      setConvention({ ...convention, date: date.toDate() });
+      setCompetition({ ...competition, date: date.toDate() });
       setErrors({ ...errors, date: !date.isValid() });
     },
-    [convention, errors],
+    [competition, errors],
   );
   const onChangeNumber = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.currentTarget;
       const count = Number(value) || -1;
-      setConvention({ ...convention, courseCount: count });
+      setCompetition({ ...competition, courseCount: count });
       setErrors({ ...errors, courseCount: count < 1 });
     },
-    [convention, errors],
+    [competition, errors],
   );
   const onClickCommitButton = useCallback(() => {
     if (hasError(errors)) return;
-    onCommit(convention);
+    onCommit(competition);
     onClose();
-  }, [convention, errors, onClose, onCommit]);
+  }, [competition, errors, onClose, onCommit]);
   const onClickCancelButton = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -79,13 +79,13 @@ export const ConventionDialog: React.FC<Props> = (props) => {
     onClose();
   }, [onClose]);
   return (
-    <Dialog {...dialogProps} onClose={onDialogClose}>
+    <Dialog {...dialogProps} open={open} onClose={onDialogClose}>
       <DialogContent data-testid="container">
         <Stack spacing={2}>
           <TextField
             label="イベント名"
             data-testid="title-input"
-            value={convention.title}
+            value={competition.title}
             onChange={onChangeString}
             inputProps={{ 'data-id': 'title' }}
             error={errors.title}
@@ -93,7 +93,7 @@ export const ConventionDialog: React.FC<Props> = (props) => {
           <DesktopDatePicker
             label="開催日"
             inputFormat="YYYY/MM/DD"
-            value={convention.date}
+            value={competition.date}
             onChange={onChangeDate}
             renderInput={(params) => (
               <TextField
@@ -107,7 +107,7 @@ export const ConventionDialog: React.FC<Props> = (props) => {
           <TextField
             label="開催場所"
             data-testid="place-input"
-            value={convention.place}
+            value={competition.place}
             onChange={onChangeString}
             inputProps={{ 'data-id': 'place' }}
             error={errors.place}
@@ -115,7 +115,7 @@ export const ConventionDialog: React.FC<Props> = (props) => {
           <TextField
             label="コース数"
             data-testid="course-count"
-            value={convention.courseCount < 1 ? '' : convention.courseCount}
+            value={competition.courseCount < 1 ? '' : competition.courseCount}
             type="number"
             inputProps={{ 'data-id': 'courseCount' }}
             error={errors.courseCount}

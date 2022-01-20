@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, queryByTestId, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { PlayerList } from '../../components/playerList';
@@ -21,7 +21,7 @@ const render = (id = '001') =>
       </Routes>
     </MemoryRouter>,
     {
-      conventionList: [
+      competitionList: [
         {
           id: '001',
           note: '備考',
@@ -94,3 +94,24 @@ test('プレイヤーダイアログを、キャンセルボタンで閉じる',
   fireEvent.click(getByTestId('cancel-button'));
   await waitFor(() => expect(queryByTestId('player-dialog')).toBeFalsy());
 });
+
+test.todo('プレイヤーを編集する。');
+test.todo('プレイヤーを削除する。');
+
+test('イベントを編集する', async () => {
+  const [{ getByTestId }] = render();
+  fireEvent.click(getByTestId('edit-competition'));
+  expect(
+    (getByTestId('title-input').querySelector('input') as HTMLInputElement)
+      .value,
+  ).toBe('イベント００１');
+  fireEvent.change(
+    getByTestId('title-input').querySelector('input') as HTMLInputElement,
+    { target: { value: 'イベント００２' } },
+  );
+  fireEvent.click(getByTestId('commit-button'));
+  await waitFor(() =>
+    expect(getByTestId('title').textContent).toBe('イベント００２'),
+  );
+});
+test.todo('イベントを削除する');

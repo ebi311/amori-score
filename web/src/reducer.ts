@@ -2,6 +2,7 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { GlobalState, initGlobalState } from './globalState';
 import * as actions from './actions/actions';
 import { createScore } from './controllers/score';
+import { CompetitionList } from './components/competitionList';
 
 export const reducer = (partialState: Partial<GlobalState> = {}) => {
   const defaultInit = initGlobalState();
@@ -9,14 +10,14 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
   return reducerWithInitialState(initState)
     .case(actions.setCourseScore, (state, payload) => {
       const newState = { ...state };
-      newState.conventionList = [...state.conventionList];
-      const convention = newState.conventionList.find(
-        (a) => a.id === payload.conventionId,
+      newState.competitionList = [...state.competitionList];
+      const competition = newState.competitionList.find(
+        (a) => a.id === payload.competitionId,
       );
-      if (!convention) return state;
-      convention.scores = [...convention.scores];
+      if (!competition) return state;
+      competition.scores = [...competition.scores];
       const { index, score } = payload;
-      convention.scores[index] = score;
+      competition.scores[index] = score;
       return newState;
     })
     .case(actions.setDialogForPlayer, (state, payload) => {
@@ -24,25 +25,32 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       newState.playerDialog = { ...state.playerDialog, ...payload };
       return newState;
     })
-    .case(actions.setDialogForConvention, (state, payload) => ({
+    .case(actions.setDialogForCompetition, (state, payload) => ({
       ...state,
-      conventionDialog: { ...state.conventionDialog, ...payload },
+      competitionDialog: { ...state.competitionDialog, ...payload },
     }))
-    .case(actions.addConvention, (state, payload) => ({
+    .case(actions.addCompetition, (state, payload) => ({
       ...state,
-      conventionList: [...state.conventionList, payload],
+      competitionList: [...state.competitionList, payload],
     }))
+    .case(actions.updateCompetition, (state, payload) => {
+      const compeList = [...state.competitionList];
+      const index = compeList.findIndex((a) => a.id === payload.id);
+      if (index === -1) return state;
+      compeList[index] = payload;
+      return { ...state, competitionList: compeList };
+    })
     .case(actions.addPlayer, (state, payload) => {
-      const conv = state.conventionList.find(
-        (c) => c.id === payload.conventionId,
+      const compe = state.competitionList.find(
+        (c) => c.id === payload.competitionId,
       );
-      if (!conv) return state;
-      conv.scores = [...conv.scores, createScore(payload.player)];
-      const newConvList = [
-        conv,
-        ...state.conventionList.filter((c) => c.id !== payload.conventionId),
+      if (!compe) return state;
+      compe.scores = [...compe.scores, createScore(payload.player)];
+      const newCompeList = [
+        compe,
+        ...state.competitionList.filter((c) => c.id !== payload.competitionId),
       ];
-      return { ...state, conventionList: newConvList };
+      return { ...state, competitionList: newCompeList };
     })
     .build();
 };

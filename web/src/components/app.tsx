@@ -2,8 +2,8 @@ import { Container, css, useTheme } from '@mui/material';
 import React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { useStyles } from './commonStyles';
-import { ConventionDialog } from './conventionDialog';
-import { ConventionList } from './conventionList';
+import { CompetitionDialog } from './competitionDialog';
+import { CompetitionList } from './competitionList';
 import { PlayerList } from './playerList';
 
 export const App: React.FC = () => {
@@ -26,7 +26,7 @@ export const App: React.FC = () => {
       <Container>
         <HashRouter>
           <Routes>
-            <Route path="/" element={<ConventionList />} />
+            <Route path="/" element={<CompetitionList />} />
             <Route path="/scores/:id" element={<PlayerList />} />
           </Routes>
         </HashRouter>

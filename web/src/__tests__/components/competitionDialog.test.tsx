@@ -2,24 +2,25 @@
 import '@testing-library/jest-dom';
 import { fireEvent } from '@testing-library/react';
 import dayjs from 'dayjs';
-import { ConventionDialog } from '../../components/conventionDialog';
-import { createConvention } from '../../controllers/convention';
-import { customRender as _render } from './test-utils';
-import nanoid from 'nanoid';
 import { mocked } from 'jest-mock';
+import nanoid from 'nanoid';
+import { CompetitionDialog } from '../../components/competitionDialog';
+import { customRender as _render } from './test-utils';
 
 jest.mock('nanoid');
 mocked(nanoid).nanoid.mockReturnValue('0001');
 
 let onClose: jest.Mock;
 let onCommit: jest.Mock;
+let onOpen: jest.Mock;
 const render = (open = true) => {
   onClose = jest.fn();
   onCommit = jest.fn();
-  return _render(
-    <ConventionDialog
-      open={open}
-      convention={{
+  onOpen = jest.fn();
+  return _render(<CompetitionDialog onClose={onClose} onCommit={onCommit} />, {
+    competitionDialog: {
+      open,
+      competition: {
         title: 'イベント01',
         date: new Date('2022-01-01T00:00:00Z'),
         id: '001',
@@ -27,11 +28,9 @@ const render = (open = true) => {
         place: '場所1',
         scores: [],
         courseCount: 9,
-      }}
-      onClose={onClose}
-      onCommit={onCommit}
-    />,
-  );
+      },
+    },
+  });
 };
 
 test('フォームに値を表示する', () => {
@@ -167,4 +166,3 @@ test('ダイアログを閉じる', () => {
   const container = queryByTestId('container');
   expect(container).toBeFalsy();
 });
-test.todo('ダイアログを開き直したときに、もとに戻す');

@@ -2,8 +2,8 @@
 import * as testing from '@testing-library/react';
 import { fireEvent } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
-import { ConventionList } from '../../components/conventionList';
-import { Convention } from '../../controllers/convention';
+import { CompetitionList } from '../../components/competitionList';
+import { Competition } from '../../controllers/competition';
 import { customRender as _render } from './test-utils';
 import { mocked } from 'jest-mock';
 import nanoid from 'nanoid';
@@ -15,7 +15,7 @@ const DummyScore = () => {
   const params = useParams();
   return <div data-testid="id">{params.id}</div>;
 };
-const conventions: Convention[] = [...Array(3)].map((_, i) => ({
+const competitions: Competition[] = [...Array(3)].map((_, i) => ({
   id: i.toString().padStart(3, '0'),
   title: `イベント${i}`,
   date: new Date(`2022-01-1${i}T00:00:00Z`),
@@ -29,12 +29,12 @@ const render = () =>
   _render(
     <MemoryRouter>
       <Routes>
-        <Route path="/" element={<ConventionList />} />
+        <Route path="/" element={<CompetitionList />} />
         <Route path="/scores/:id" element={<DummyScore />} />
       </Routes>
     </MemoryRouter>,
     {
-      conventionList: conventions,
+      competitionList: competitions,
     },
   );
 test('イベントの一覧を表示する', () => {
@@ -55,9 +55,9 @@ test('新しいイベントを作成する', async () => {
   const [{ getByTestId }, store] = render();
   const newButton = getByTestId('new-button');
   fireEvent.click(newButton);
-  expect(store.getState().conventionDialog.open).toBe(true);
+  expect(store.getState().competitionDialog.open).toBe(true);
   // ダイアログの表示確認
-  const dialog = getByTestId('convention-dialog');
+  const dialog = getByTestId('competition-dialog');
   const titleTextField = dialog.querySelector(
     '[data-id=title]',
   ) as HTMLInputElement;
@@ -100,6 +100,3 @@ test('既存のイベントを開く', () => {
   fireEvent.click(row);
   expect(getByTestId('id').textContent).toBe('000');
 });
-
-test('イベントを編集する。');
-test('イベントを削除する。');

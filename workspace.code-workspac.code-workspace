@@ -13,6 +13,7 @@
       "watch": false,
       "onSave": "test-file"
     },
-    "liveServer.settings.multiRootWorkspaceName": "web"
+    "liveServer.settings.multiRootWorkspaceName": "web",
+    "cSpell.words": ["compe"]
   }
 }

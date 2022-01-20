@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { Score } from './score';
 
-export type Convention = {
+export type Competition = {
   id: string;
   title: string;
   date: Date;
@@ -11,7 +11,7 @@ export type Convention = {
   courseCount: number;
 };
 
-export const createConvention = (): Convention => ({
+export const createCompetition = (): Competition => ({
   id: nanoid(),
   title: '',
   date: new Date(),
