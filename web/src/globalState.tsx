@@ -1,6 +1,5 @@
 import { Competition, createCompetition } from './controllers/competition';
 import { Player } from './controllers/player';
-import { Score } from './controllers/score';
 
 export type GlobalState = {
   playerDialog: {

@@ -1,4 +1,5 @@
 import { createTheme, css } from '@mui/material/styles';
+import fontUrl from './MPLUS1-Regular.ttf';
 
 export const theme = createTheme({
   // 必要に応じて追加する{
@@ -13,6 +14,10 @@ export const theme = createTheme({
 });
 
 export const globalStyle = css`
+  @font-face {
+    font-family: 'Roboto';
+    src: url(${fontUrl});
+  }
   body {
     background-color: ${theme.palette.grey[100]};
   }
