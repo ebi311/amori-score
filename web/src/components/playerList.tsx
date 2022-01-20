@@ -7,6 +7,7 @@ import {
   addPlayer,
   setCourseScore,
   setDialogForPlayer,
+  setDialogForCompetition,
   updateCompetition,
 } from '../actions/actions';
 import { Competition, createCompetition } from '../controllers/competition';
@@ -79,6 +80,12 @@ export const PlayerList: React.FC = () => {
   const onCommitCompeDialog = useCallback(
     (compe: Competition) => {
       dispatch(updateCompetition(compe));
+      dispatch(
+        setDialogForCompetition({
+          open: false,
+          competition: createCompetition(),
+        }),
+      );
     },
     [dispatch],
   );

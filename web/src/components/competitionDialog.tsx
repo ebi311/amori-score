@@ -79,7 +79,12 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
     onClose();
   }, [onClose]);
   return (
-    <Dialog {...dialogProps} open={open} onClose={onDialogClose}>
+    <Dialog
+      {...dialogProps}
+      open={open}
+      onClose={onDialogClose}
+      data-testid="competition-dialog"
+    >
       <DialogContent data-testid="container">
         <Stack spacing={2}>
           <TextField

@@ -99,7 +99,7 @@ test.todo('プレイヤーを編集する。');
 test.todo('プレイヤーを削除する。');
 
 test('イベントを編集する', async () => {
-  const [{ getByTestId }] = render();
+  const [{ getByTestId, queryByTestId }] = render();
   fireEvent.click(getByTestId('edit-competition'));
   expect(
     (getByTestId('title-input').querySelector('input') as HTMLInputElement)
@@ -113,5 +113,6 @@ test('イベントを編集する', async () => {
   await waitFor(() =>
     expect(getByTestId('title').textContent).toBe('イベント００２'),
   );
+  await waitFor(() => expect(queryByTestId('competition-dialog')).toBeFalsy());
 });
 test.todo('イベントを削除する');
