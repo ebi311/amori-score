@@ -7,21 +7,34 @@ import { Score } from '../controllers/score';
 import { toNumber } from '../utils';
 import { useCommonStyles } from './commonStyles';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { GlobalState } from '../globalState';
+import { setCourseScore } from '../actions/actions';
 
 type Props = {
+  competitionId: string;
+  scoreId: string;
   index: number;
   score: Score;
   courseCount: number;
-  onChange: (score: Score, index: number) => void;
   onOpenEditPlayer: (player: Player) => void;
   onDeletePlayer: (score: Score) => void;
 };
 
 export const PlayerLane: React.FC<Props> = (props) => {
-  const { score, index, courseCount, onOpenEditPlayer, onDeletePlayer } = props;
+  const { onOpenEditPlayer, onDeletePlayer, competitionId } = props;
+  const [score, courseCount] = useSelector<GlobalState, [Score, number]>(
+    (s) => {
+      const compe = s.competitionList.find((a) => a.id === props.competitionId);
+      const score = compe?.scores.find((a) => a.id === props.scoreId);
+      if (!compe || !score) throw new Error('not found score.');
+      return [score, compe.courseCount];
+    },
+  );
   const { player } = score;
   const theme = useTheme();
   const { lane: styles } = useCommonStyles(theme);
+  const dispatch = useDispatch();
   const changeScore = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const courseNo = toNumber(e.currentTarget.dataset['index']);
@@ -29,16 +42,16 @@ export const PlayerLane: React.FC<Props> = (props) => {
       if (courseNo === 0) return;
       const newScore = clone(score);
       newScore.set(courseNo, value);
-      props.onChange(newScore, index);
+      dispatch(setCourseScore({ competitionId, score: newScore }));
     },
-    [index, props, score],
+    [competitionId, dispatch, score],
   );
 
   const cells = useMemo(() => {
     const ret: JSX.Element[] = [];
     [...Array(courseCount)].map((_, _i) => {
       const i = _i + 1;
-      const id = `${index}-course-${i}`;
+      const id = `${score.id}-course-${i}`;
       const s = score.get(i)?.toString() || '';
       ret.push(
         <Box css={styles.cell} key={id}>
@@ -66,7 +79,7 @@ export const PlayerLane: React.FC<Props> = (props) => {
       </Box>,
     );
     return ret;
-  }, [changeScore, courseCount, index, score, styles.cell, styles.total]);
+  }, [changeScore, courseCount, score, styles.cell, styles.total]);
   const onClickEdit = useCallback(() => {
     onOpenEditPlayer(score.player);
   }, [onOpenEditPlayer, score.player]);
@@ -80,7 +93,7 @@ export const PlayerLane: React.FC<Props> = (props) => {
     onDeletePlayer(score);
   }, [onDeletePlayer, score]);
   return (
-    <Box css={styles.root} data-testid={`score-row-${index}`}>
+    <Box css={styles.root} data-testid={`score-row-${score.id}`}>
       <Box css={styles.rowHeader}>
         {player.name}({player.age}歳)
         <Box>

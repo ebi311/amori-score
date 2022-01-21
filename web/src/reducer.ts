@@ -14,7 +14,8 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       if (index === -1) return state;
       const compe = { ...state.competitionList[index] };
       const scores = [...compe.scores];
-      scores[payload.index] = payload.score;
+      const scoreIndex = scores.findIndex((a) => a.id === payload.score.id);
+      scores[scoreIndex] = payload.score;
       compe.scores = scores;
       state.competitionList[index] = compe;
       return { ...state };

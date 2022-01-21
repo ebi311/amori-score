@@ -7,9 +7,7 @@ import { GlobalState } from '../globalState';
 const ac = actionCreatorFactory('actions');
 
 export const setCourseScore =
-  ac<{ competitionId: string; score: Score; index: number }>(
-    'set-course-score',
-  );
+  ac<{ competitionId: string; score: Score }>('set-course-score');
 
 export const setDialogForPlayer = ac<Partial<GlobalState['playerDialog']>>(
   'set-open-dialog-for-player',
