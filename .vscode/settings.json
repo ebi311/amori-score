@@ -1,0 +1,9 @@
+{
+  "jest.disabledWorkspaceFolders": ["electron"],
+  "jest.autoRun": {
+    "watch": false,
+    "onSave": "test-file"
+  },
+  "liveServer.settings.multiRootWorkspaceName": "web",
+  "cSpell.words": ["compe"]
+}

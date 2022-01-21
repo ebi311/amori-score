@@ -1,0 +1,38 @@
+{
+  "name": "@amori-scores/app",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build:dev -w web && npm start -w electron",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebi311/amori-score.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ebi311/amori-score/issues"
+  },
+  "homepage": "https://github.com/ebi311/amori-score#readme",
+  "workspaces": [
+    "web",
+    "electron"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "@types/jest": "^27.0.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "jest": "^27.4.7",
+    "mockdate": "^3.0.5",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.2"
+  }
+}
