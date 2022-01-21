@@ -5,5 +5,7 @@
     "onSave": "test-file"
   },
   "liveServer.settings.multiRootWorkspaceName": "web",
-  "cSpell.words": ["compe"]
+  "cSpell.words": ["compe"],
+  "codemetrics.nodeconfiguration.ArrowFunction": 0,
+  "codemetrics.nodeconfiguration.JsxSelfClosingElement": 0
 }

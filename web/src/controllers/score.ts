@@ -1,6 +1,11 @@
+import { nanoid } from 'nanoid';
 import { Player } from './player';
 
 class ScoreImplements {
+  private _id = nanoid();
+  public get id() {
+    return this._id;
+  }
   private score: number[] = [];
   constructor(public player: Player) {}
   set(course: number, score: number) {
@@ -55,4 +60,5 @@ class ScoreImplements {
 
 export type Score = ScoreImplements;
 
-export const createScore = (player: Player) => new ScoreImplements(player);
+export const createScore = (player: Player): Score =>
+  new ScoreImplements(player);

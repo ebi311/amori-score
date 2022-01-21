@@ -1,24 +1,23 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { GlobalState, initGlobalState } from './globalState';
 import * as actions from './actions/actions';
 import { createScore } from './controllers/score';
-import { CompetitionList } from './components/competitionList';
+import { GlobalState, initGlobalState } from './globalState';
 
 export const reducer = (partialState: Partial<GlobalState> = {}) => {
   const defaultInit = initGlobalState();
   const initState = { ...defaultInit, ...partialState };
   return reducerWithInitialState(initState)
     .case(actions.setCourseScore, (state, payload) => {
-      const newState = { ...state };
-      newState.competitionList = [...state.competitionList];
-      const competition = newState.competitionList.find(
+      const index = state.competitionList.findIndex(
         (a) => a.id === payload.competitionId,
       );
-      if (!competition) return state;
-      competition.scores = [...competition.scores];
-      const { index, score } = payload;
-      competition.scores[index] = score;
-      return newState;
+      if (index === -1) return state;
+      const compe = { ...state.competitionList[index] };
+      const scores = [...compe.scores];
+      scores[payload.index] = payload.score;
+      compe.scores = scores;
+      state.competitionList[index] = compe;
+      return { ...state };
     })
     .case(actions.setDialogForPlayer, (state, payload) => {
       const newState = { ...state };
@@ -34,23 +33,32 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       competitionList: [...state.competitionList, payload],
     }))
     .case(actions.updateCompetition, (state, payload) => {
-      const compeList = [...state.competitionList];
-      const index = compeList.findIndex((a) => a.id === payload.id);
+      const index = state.competitionList.findIndex((a) => a.id === payload.id);
       if (index === -1) return state;
-      compeList[index] = payload;
-      return { ...state, competitionList: compeList };
+      state.competitionList[index] = { ...payload };
+      return { ...state };
     })
     .case(actions.addPlayer, (state, payload) => {
-      const compe = state.competitionList.find(
+      const compeIndex = state.competitionList.findIndex(
         (c) => c.id === payload.competitionId,
       );
-      if (!compe) return state;
+      if (compeIndex === -1) return state;
+      const compe = { ...state.competitionList[compeIndex] };
       compe.scores = [...compe.scores, createScore(payload.player)];
-      const newCompeList = [
-        compe,
-        ...state.competitionList.filter((c) => c.id !== payload.competitionId),
-      ];
-      return { ...state, competitionList: newCompeList };
+      state.competitionList[compeIndex] = compe;
+      return { ...state };
+    })
+    .case(actions.deleteScore, (state, payload) => {
+      const compeIndex = state.competitionList.findIndex(
+        (a) => a.id === payload.competitionId,
+      );
+      if (compeIndex === -1) return state;
+      const compe = { ...state.competitionList[compeIndex] };
+      const scores = compe.scores.filter((a) => a.id !== payload.scoreId);
+      if (!scores) return state;
+      compe.scores = scores;
+      state.competitionList[compeIndex] = compe;
+      return { ...state };
     })
     .build();
 };

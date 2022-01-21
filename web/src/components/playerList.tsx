@@ -9,6 +9,7 @@ import {
   setDialogForPlayer,
   setDialogForCompetition,
   updateCompetition,
+  deleteScore,
 } from '../actions/actions';
 import { Competition, createCompetition } from '../controllers/competition';
 import { Player } from '../controllers/player';
@@ -22,9 +23,6 @@ import { PlayerLane } from './playerLane';
 import { SideMenu } from './sideMenu';
 
 export const PlayerList: React.FC = () => {
-  const competitions = useSelector<GlobalState, Competition[]>(
-    (a) => a.competitionList,
-  );
   const styles = useStyles((theme) => ({
     sideMenu: css`
       border-radius: 5px;
@@ -39,10 +37,13 @@ export const PlayerList: React.FC = () => {
     `,
   }));
   const { id } = useParams();
-  const competition = useMemo(
-    () => competitions.find((a) => a.id === id) || createCompetition(),
-    [competitions, id],
+  const competition = useSelector<GlobalState, Competition>(
+    (a) => a.competitionList.find((a) => a.id === id) || createCompetition(),
   );
+  // const competition = useMemo(
+  //   () => competitions.find((a) => a.id === id) || createCompetition(),
+  //   [competitions, id],
+  // );
   const { scores, courseCount } = competition;
   const dispatch = useDispatch();
   // パラメータが変更したときに、データを取り直す
@@ -53,6 +54,25 @@ export const PlayerList: React.FC = () => {
     },
     [dispatch, id],
   );
+  const onEditPlayer = useCallback(
+    (player: Player) => {
+      dispatch(
+        setDialogForPlayer({
+          open: true,
+          player,
+        }),
+      );
+    },
+    [dispatch],
+  );
+  const onDeletePlayer = useCallback(
+    (score: Score) => {
+      dispatch(
+        deleteScore({ competitionId: competition.id, scoreId: score.id }),
+      );
+    },
+    [competition.id, dispatch],
+  );
   const rows = useMemo(() => {
     return scores.map((s, i) => (
       <PlayerLane
@@ -61,9 +81,11 @@ export const PlayerList: React.FC = () => {
         score={s}
         onChange={onChange}
         courseCount={courseCount}
+        onOpenEditPlayer={onEditPlayer}
+        onDeletePlayer={onDeletePlayer}
       />
     ));
-  }, [courseCount, onChange, scores]);
+  }, [courseCount, onChange, onDeletePlayer, onEditPlayer, scores]);
   const onCommitPlayerDialog = useCallback(
     (player: Player) => {
       if (!id) return;
@@ -89,6 +111,14 @@ export const PlayerList: React.FC = () => {
     },
     [dispatch],
   );
+  const onCloseCompeDialog = useCallback(() => {
+    dispatch(
+      setDialogForCompetition({
+        open: false,
+        competition: createCompetition(),
+      }),
+    );
+  }, [dispatch]);
   return (
     <>
       <Grid container>
@@ -113,7 +143,10 @@ export const PlayerList: React.FC = () => {
         onCommit={onCommitPlayerDialog}
         onClose={onClosePlayerDialog}
       />
-      <CompetitionDialog onCommit={onCommitCompeDialog} onClose={() => ''} />
+      <CompetitionDialog
+        onCommit={onCommitCompeDialog}
+        onClose={onCloseCompeDialog}
+      />
     </>
   );
 };

@@ -1,4 +1,5 @@
-import { fireEvent, queryByTestId, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import * as testLib from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { PlayerList } from '../../components/playerList';
@@ -95,8 +96,27 @@ test('プレイヤーダイアログを、キャンセルボタンで閉じる',
   await waitFor(() => expect(queryByTestId('player-dialog')).toBeFalsy());
 });
 
-test.todo('プレイヤーを編集する。');
-test.todo('プレイヤーを削除する。');
+test('プレイヤーを編集する', async () => {
+  const [{ getByTestId, queryByTestId }] = render();
+  fireEvent.click(
+    testLib.getByTestId(getByTestId('score-row-0'), 'edit-player'),
+  );
+  expect(queryByTestId('player-dialog')).toBeTruthy();
+  expect((getByTestId('name-input') as HTMLInputElement).value).toBe(
+    'プレイヤー0',
+  );
+});
+test('プレイヤーを削除する。', async () => {
+  jest.spyOn(window, 'confirm').mockReturnValue(true);
+  const [{ getByTestId, getAllByTestId, getByText }] = render();
+  fireEvent.click(
+    testLib.getByTestId(getByTestId('score-row-0'), 'delete-player'),
+  );
+  await waitFor(() => expect(getAllByTestId(/score-row-/).length).toBe(4));
+  [...Array(4)].forEach((_, i) => {
+    expect(getByText(new RegExp(`プレイヤー${i + 1}`))).toBeTruthy();
+  });
+});
 
 test('イベントを編集する', async () => {
   const [{ getByTestId, queryByTestId }] = render();
@@ -113,6 +133,12 @@ test('イベントを編集する', async () => {
   await waitFor(() =>
     expect(getByTestId('title').textContent).toBe('イベント００２'),
   );
+  await waitFor(() => expect(queryByTestId('competition-dialog')).toBeFalsy());
+});
+test('イベントダイアログをキャンセルボタンで閉じる', async () => {
+  const [{ getByTestId, queryByTestId }] = render();
+  fireEvent.click(getByTestId('edit-competition'));
+  fireEvent.click(getByTestId('cancel-button'));
   await waitFor(() => expect(queryByTestId('competition-dialog')).toBeFalsy());
 });
 test.todo('イベントを削除する');

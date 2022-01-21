@@ -14,10 +14,18 @@ const makeScore = () => {
   score.set(9, 5);
   return score;
 };
+
 test('プレイヤーの行を表示する', () => {
   const score = makeScore();
   const [{ getByText, getAllByTestId, getByTestId }] = render(
-    <PlayerLane index={0} score={score} onChange={jest.fn()} courseCount={9} />,
+    <PlayerLane
+      index={0}
+      score={score}
+      onChange={jest.fn()}
+      courseCount={9}
+      onOpenEditPlayer={jest.fn()}
+      onDeletePlayer={jest.fn()}
+    />,
   );
   expect(!!getByText(/プレイヤー1/)).toBeTruthy();
   expect(!!getByText(/20歳/)).toBeTruthy();
@@ -44,7 +52,14 @@ test('スコアを変更したらコールバック関数を実行する', () =>
     expect(index).toBe(0);
   });
   const [{ getByTestId }] = render(
-    <PlayerLane index={0} score={score} onChange={cb} courseCount={9} />,
+    <PlayerLane
+      index={0}
+      score={score}
+      onChange={cb}
+      courseCount={9}
+      onOpenEditPlayer={jest.fn()}
+      onDeletePlayer={jest.fn()}
+    />,
   );
   const input = getByTestId('0-course-3') as HTMLInputElement;
   fireEvent.change(input, { target: { value: '1' } });
@@ -53,5 +68,36 @@ test('スコアを変更したらコールバック関数を実行する', () =>
   waitFor(() => expect(cell3.value).toBe('1'));
 });
 
-test.todo('プレイヤーを編集する。');
-test.todo('プレイヤーを削除する。');
+test('プレイヤーを編集する。', () => {
+  const onOpenEditPlayer = jest.fn();
+  const score = makeScore();
+  const [{ getByTestId }] = render(
+    <PlayerLane
+      index={0}
+      score={score}
+      onChange={jest.fn()}
+      courseCount={9}
+      onOpenEditPlayer={onOpenEditPlayer}
+      onDeletePlayer={onOpenEditPlayer}
+    />,
+  );
+  fireEvent.click(getByTestId('edit-player'));
+  expect(onOpenEditPlayer).toBeCalled();
+});
+test('プレイヤーを削除する。', () => {
+  jest.spyOn(window, 'confirm').mockReturnValue(true);
+  const score = makeScore();
+  const onDeletePlayer = jest.fn();
+  const [{ getByTestId }] = render(
+    <PlayerLane
+      index={0}
+      score={score}
+      onChange={jest.fn()}
+      courseCount={9}
+      onOpenEditPlayer={jest.fn()}
+      onDeletePlayer={onDeletePlayer}
+    />,
+  );
+  fireEvent.click(getByTestId('delete-player'));
+  expect(onDeletePlayer).toBeCalled();
+});
