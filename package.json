@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build:dev -w web && npm start -w electron",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm test -w web && npm test -w electron"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,9 @@
     "electron"
   ],
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "@types/jest": "^27.0.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.27.1",
@@ -33,6 +33,6 @@
     "mockdate": "^3.0.5",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.2",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.5"
   }
 }
