@@ -14,9 +14,6 @@ import { setCourseScore } from '../actions/actions';
 type Props = {
   competitionId: string;
   scoreId: string;
-  index: number;
-  score: Score;
-  courseCount: number;
   onOpenEditPlayer: (player: Player) => void;
   onDeletePlayer: (score: Score) => void;
 };

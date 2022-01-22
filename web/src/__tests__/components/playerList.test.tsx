@@ -5,7 +5,19 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { PlayerList } from '../../components/playerList';
 import { createScore } from '../../controllers/score';
 import { customRender as _render } from './test-utils';
+import { mocked } from 'jest-mock';
+import nanoid from 'nanoid';
 
+function* mockNanoid() {
+  let i = 0;
+  while (true) {
+    yield i.toString().padStart(6, '0');
+    i++;
+  }
+}
+let y: ReturnType<typeof mockNanoid>;
+jest.mock('nanoid');
+mocked(nanoid).nanoid.mockImplementation(() => y.next().value || '');
 const testData = (count = 5, prefix = '') => {
   return [...Array(count)].map((_, i) => {
     return createScore({
@@ -44,6 +56,9 @@ const render = (id = '001') =>
       ],
     },
   );
+beforeEach(() => {
+  y = mockNanoid();
+});
 test('ステートのリストを表示する', () => {
   const [{ getAllByTestId, getByText, getByTestId }] = render();
   expect(getByTestId('title').textContent).toBe('イベント００１');
@@ -57,11 +72,11 @@ test('ステートのリストを表示する', () => {
 });
 
 test('スコアを変更したら反映する', async () => {
-  const [{ getByTestId }] = render();
-  const input = getByTestId('0-course-1');
+  const [{ getByTestId, findByTestId }] = render();
+  const input = await findByTestId('000000-course-1');
   fireEvent.change(input, { target: { value: '1' } });
   await waitFor(() => {
-    const input = getByTestId('0-course-1') as HTMLInputElement;
+    const input = getByTestId('000000-course-1') as HTMLInputElement;
     return expect(input.value).toBe('1');
   });
 });
@@ -99,7 +114,7 @@ test('プレイヤーダイアログを、キャンセルボタンで閉じる',
 test('プレイヤーを編集する', async () => {
   const [{ getByTestId, queryByTestId }] = render();
   fireEvent.click(
-    testLib.getByTestId(getByTestId('score-row-0'), 'edit-player'),
+    testLib.getByTestId(getByTestId('score-row-000000'), 'edit-player'),
   );
   expect(queryByTestId('player-dialog')).toBeTruthy();
   expect((getByTestId('name-input') as HTMLInputElement).value).toBe(
@@ -110,7 +125,7 @@ test('プレイヤーを削除する。', async () => {
   jest.spyOn(window, 'confirm').mockReturnValue(true);
   const [{ getByTestId, getAllByTestId, getByText }] = render();
   fireEvent.click(
-    testLib.getByTestId(getByTestId('score-row-0'), 'delete-player'),
+    testLib.getByTestId(getByTestId('score-row-000000'), 'delete-player'),
   );
   await waitFor(() => expect(getAllByTestId(/score-row-/).length).toBe(4));
   [...Array(4)].forEach((_, i) => {

@@ -1,11 +1,11 @@
-import { PlayerLane } from '../../components/playerLane';
-import { customRender as render } from './test-utils';
-import React from 'react';
-import { createScore, Score } from '../../controllers/score';
 import { fireEvent, waitFor } from '@testing-library/react';
-import nanoid from 'nanoid';
 import { mocked } from 'jest-mock';
+import nanoid from 'nanoid';
+import React from 'react';
+import { PlayerLane } from '../../components/playerLane';
+import { createScore, Score } from '../../controllers/score';
 import { GlobalState } from '../../globalState';
+import { customRender as render } from './test-utils';
 
 function* mockNanoid() {
   let i = 0;
@@ -17,6 +17,7 @@ function* mockNanoid() {
 const y = mockNanoid();
 jest.mock('nanoid');
 mocked(nanoid).nanoid.mockReturnValue(y.next().value || '');
+
 const makeScore = () => {
   const score = createScore({
     name: 'プレイヤー1',
@@ -48,9 +49,6 @@ test('プレイヤーの行を表示する', () => {
     <PlayerLane
       competitionId="compe001"
       scoreId="000000"
-      index={0}
-      score={score}
-      courseCount={9}
       onOpenEditPlayer={jest.fn()}
       onDeletePlayer={jest.fn()}
     />,
@@ -84,9 +82,6 @@ test('スコアを変更したらコールバック関数を実行する', () =>
     <PlayerLane
       competitionId="compe001"
       scoreId="000000"
-      index={0}
-      score={score}
-      courseCount={9}
       onOpenEditPlayer={jest.fn()}
       onDeletePlayer={jest.fn()}
     />,
@@ -106,9 +101,6 @@ test('プレイヤーを編集する。', () => {
     <PlayerLane
       competitionId="compe001"
       scoreId="000000"
-      index={0}
-      score={score}
-      courseCount={9}
       onOpenEditPlayer={onOpenEditPlayer}
       onDeletePlayer={onOpenEditPlayer}
     />,
@@ -125,9 +117,6 @@ test('プレイヤーを削除する。', () => {
     <PlayerLane
       competitionId="compe001"
       scoreId="000000"
-      index={0}
-      score={score}
-      courseCount={9}
       onOpenEditPlayer={jest.fn()}
       onDeletePlayer={onDeletePlayer}
     />,

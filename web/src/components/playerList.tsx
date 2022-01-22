@@ -49,8 +49,8 @@ export const PlayerList: React.FC = () => {
   // パラメータが変更したときに、データを取り直す
 
   const onChange = useCallback(
-    (score: Score, index: number) => {
-      dispatch(setCourseScore({ competitionId: id || '', score, index }));
+    (score: Score) => {
+      dispatch(setCourseScore({ competitionId: id || '', score }));
     },
     [dispatch, id],
   );
@@ -74,18 +74,16 @@ export const PlayerList: React.FC = () => {
     [competition.id, dispatch],
   );
   const rows = useMemo(() => {
-    return scores.map((s, i) => (
+    return scores.map((s) => (
       <PlayerLane
-        key={i}
-        index={i}
-        score={s}
-        onChange={onChange}
-        courseCount={courseCount}
+        key={s.id}
+        competitionId={competition.id}
+        scoreId={s.id}
         onOpenEditPlayer={onEditPlayer}
         onDeletePlayer={onDeletePlayer}
       />
     ));
-  }, [courseCount, onChange, onDeletePlayer, onEditPlayer, scores]);
+  }, [competition.id, onDeletePlayer, onEditPlayer, scores]);
   const onCommitPlayerDialog = useCallback(
     (player: Player) => {
       if (!id) return;

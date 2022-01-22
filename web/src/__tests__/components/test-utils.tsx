@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import { LocalizationProvider } from '@mui/lab';
+import DateAdapter from '@mui/lab/AdapterDayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { render, RenderOptions } from '@testing-library/react';
+import MockDate from 'mockdate';
+import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { createStore, Store } from 'redux';
-import { reducer } from '../../reducer';
 import { GlobalState } from '../../globalState';
-import DateAdapter from '@mui/lab/AdapterDayjs';
-import { LocalizationProvider } from '@mui/lab';
-import MockDate from 'mockdate';
+import { reducer } from '../../reducer';
 
 const theme = createTheme();
 
