@@ -12,7 +12,9 @@ import { Dayjs } from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Competition } from '../controllers/competition';
 import { GlobalState } from '../globalState';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteCompetition } from '../actions/actions';
 
 type Props = Omit<DialogProps, 'open'> & {
   onCommit: (con: Competition) => void;
@@ -32,6 +34,7 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
     GlobalState,
     GlobalState['competitionDialog']
   >((s) => s.competitionDialog);
+  const dispatch = useDispatch();
   const { onClose, onCommit, ...dialogProps } = props;
   const [competition, setCompetition] = useState(initCompetition);
   useEffect(() => {
@@ -78,6 +81,16 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
   const onDialogClose = useCallback(() => {
     onClose();
   }, [onClose]);
+  const onClickDeleteCompeButton = useCallback(() => {
+    if (
+      !window.confirm(
+        'このイベントを削除します。もとに戻すことはできません。\nよろしいですか？',
+      )
+    )
+      return;
+   dispatch(deleteCompetition(competition.id));
+  }, [competition.id, dispatch]);
+
   return (
     <Dialog
       {...dialogProps}
@@ -129,6 +142,10 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
         </Stack>
       </DialogContent>
       <DialogActions>
+        <Button data-testid="delete-compe-button" startIcon={<DeleteIcon />}
+        onClick={onClickDeleteCompeButton}>
+          削除
+        </Button>
         <Button data-testid="cancel-button" onClick={onClickCancelButton}>
           キャンセル
         </Button>

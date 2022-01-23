@@ -26,3 +26,5 @@ export const addPlayer =
 
 export const deleteScore =
   ac<{ competitionId: string; scoreId: string }>('delete-score');
+
+export const deleteCompetition = ac<string>('depete-competition');

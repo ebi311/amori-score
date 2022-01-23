@@ -3,7 +3,7 @@ import { mocked } from 'jest-mock';
 import nanoid from 'nanoid';
 import React from 'react';
 import { PlayerLane } from '../../components/playerLane';
-import { createScore, Score } from '../../controllers/score';
+import { createScore } from '../../controllers/score';
 import { GlobalState } from '../../globalState';
 import { customRender as render } from './test-utils';
 
@@ -44,7 +44,6 @@ const pState: Partial<GlobalState> = {
 };
 
 test('プレイヤーの行を表示する', () => {
-  const score = makeScore();
   const [{ getByText, getAllByTestId, getByTestId }] = render(
     <PlayerLane
       competitionId="compe001"
@@ -72,12 +71,6 @@ test('プレイヤーの行を表示する', () => {
 });
 
 test('スコアを変更したらコールバック関数を実行する', () => {
-  const score = makeScore();
-  const cb = jest.fn().mockImplementation((_score: Score, index: number) => {
-    expect(_score.get(3)).toBe(1);
-    expect(_score).not.toBe(score);
-    expect(index).toBe(0);
-  });
   const [{ getByTestId }, store] = render(
     <PlayerLane
       competitionId="compe001"
@@ -96,7 +89,6 @@ test('スコアを変更したらコールバック関数を実行する', () =>
 
 test('プレイヤーを編集する。', () => {
   const onOpenEditPlayer = jest.fn();
-  const score = makeScore();
   const [{ getByTestId }] = render(
     <PlayerLane
       competitionId="compe001"
@@ -111,7 +103,6 @@ test('プレイヤーを編集する。', () => {
 });
 test('プレイヤーを削除する。', () => {
   jest.spyOn(window, 'confirm').mockReturnValue(true);
-  const score = makeScore();
   const onDeletePlayer = jest.fn();
   const [{ getByTestId }] = render(
     <PlayerLane

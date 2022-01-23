@@ -4,12 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import {
-  addPlayer,
-  setCourseScore,
-  setDialogForPlayer,
-  setDialogForCompetition,
-  updateCompetition,
-  deleteScore,
+  addPlayer, deleteScore, setDialogForCompetition, setDialogForPlayer, updateCompetition
 } from '../actions/actions';
 import { Competition, createCompetition } from '../controllers/competition';
 import { Player } from '../controllers/player';
@@ -48,12 +43,6 @@ export const PlayerList: React.FC = () => {
   const dispatch = useDispatch();
   // パラメータが変更したときに、データを取り直す
 
-  const onChange = useCallback(
-    (score: Score) => {
-      dispatch(setCourseScore({ competitionId: id || '', score }));
-    },
-    [dispatch, id],
-  );
   const onEditPlayer = useCallback(
     (player: Player) => {
       dispatch(

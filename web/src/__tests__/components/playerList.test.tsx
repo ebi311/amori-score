@@ -156,4 +156,10 @@ test('イベントダイアログをキャンセルボタンで閉じる', async
   fireEvent.click(getByTestId('cancel-button'));
   await waitFor(() => expect(queryByTestId('competition-dialog')).toBeFalsy());
 });
-test.todo('イベントを削除する');
+test('イベントを削除する', async () => {
+  jest.spyOn(window, 'confirm').mockReturnValue(true);
+  const [{ getByTestId }, store] = render();
+  fireEvent.click(getByTestId('edit-competition'));
+  fireEvent.click(getByTestId('delete-compe-button'));
+  await waitFor(() => expect(store.getState().competitionList.length).toBe(1))
+});

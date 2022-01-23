@@ -61,5 +61,9 @@ export const reducer = (partialState: Partial<GlobalState> = {}) => {
       state.competitionList[compeIndex] = compe;
       return { ...state };
     })
+    .case(actions.deleteCompetition, (state, payload) => {
+      const newCompeList = state.competitionList.filter(c => c.id !== payload);
+      return {...state, competitionList: newCompeList};
+    })
     .build();
 };
