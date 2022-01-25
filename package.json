@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build:dev -w web && npm start -w electron",
+    "build:web-dev": "webpack --mode=development",
+    "test:web": "jest ./web/src/__tests__/**",
     "test": "npm test -w web && npm test -w electron"
   },
   "repository": {

@@ -1,15 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Score } from './score';
-
-export type Competition = {
-  id: string;
-  title: string;
-  date: Date;
-  place: string;
-  note: string;
-  scores: Score[];
-  courseCount: number;
-};
+import { Competition } from '../../../models/competition';
 
 export const createCompetition = (): Competition => ({
   id: nanoid(),

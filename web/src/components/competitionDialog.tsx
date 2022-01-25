@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Competition } from '../controllers/competition';
+import { Competition } from '../../../models/competition';
 import { GlobalState } from '../globalState';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -88,7 +88,7 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
       )
     )
       return;
-   dispatch(deleteCompetition(competition.id));
+    dispatch(deleteCompetition(competition.id));
   }, [competition.id, dispatch]);
 
   return (
@@ -142,8 +142,11 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button data-testid="delete-compe-button" startIcon={<DeleteIcon />}
-        onClick={onClickDeleteCompeButton}>
+        <Button
+          data-testid="delete-compe-button"
+          startIcon={<DeleteIcon />}
+          onClick={onClickDeleteCompeButton}
+        >
           削除
         </Button>
         <Button data-testid="cancel-button" onClick={onClickCancelButton}>

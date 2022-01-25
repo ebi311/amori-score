@@ -3,12 +3,17 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { Competition } from '../../../models/competition';
+import { Player } from '../../../models/player';
+import { Score } from '../../../models/score';
 import {
-  addPlayer, deleteScore, setDialogForCompetition, setDialogForPlayer, updateCompetition
+  addPlayer,
+  deleteScore,
+  setDialogForCompetition,
+  setDialogForPlayer,
+  updateCompetition,
 } from '../actions/actions';
-import { Competition, createCompetition } from '../controllers/competition';
-import { Player } from '../controllers/player';
-import { Score } from '../controllers/score';
+import { createCompetition } from '../controllers/competition';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
 import { CompetitionDialog } from './competitionDialog';

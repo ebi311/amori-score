@@ -3,7 +3,7 @@
 import '@testing-library/jest-dom';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import { PlayerDialog } from '../../components/playerDialog';
-import { Player } from '../../controllers/player';
+import { Player } from '../../../../models/player';
 import { customRender as render } from './test-utils';
 
 const player1: Player = {

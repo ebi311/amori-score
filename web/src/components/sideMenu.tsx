@@ -17,7 +17,7 @@ import {
   setDialogForCompetition,
   setDialogForPlayer,
 } from '../actions/actions';
-import { Competition } from '../controllers/competition';
+import { Competition } from '../../../models/competition';
 
 type Props = {
   competition: Competition;

@@ -9,9 +9,12 @@ const BundleAnalyzerPlugin =
 const isProduction = process.env.NODE_ENV == 'production';
 
 const config = {
-  entry: './src/index.tsx',
+  target: 'web',
+  entry: {
+    main: './web/src/index.tsx',
+  },
   output: {
-    path: path.resolve(__dirname, '../electron/web'),
+    path: path.resolve(__dirname, './electron/web'),
   },
   devServer: {
     open: true,
@@ -19,7 +22,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './web/index.html',
     }),
 
     // Add your plugins here
@@ -53,8 +56,8 @@ module.exports = () => {
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         generateStatsFile: true,
-        reportFilename: '../webpack-state/index.html',
-        statsFilename: '../webpack-state/stats.json',
+        reportFilename: './webpack-state/index.html',
+        statsFilename: './webpack-state/stats.json',
       }),
     );
     // config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());

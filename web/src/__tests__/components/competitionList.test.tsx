@@ -3,7 +3,7 @@ import * as testing from '@testing-library/react';
 import { fireEvent } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import { CompetitionList } from '../../components/competitionList';
-import { Competition } from '../../controllers/competition';
+import { Competition } from '../../../../models/competition';
 import { customRender as _render } from './test-utils';
 import { mocked } from 'jest-mock';
 import nanoid from 'nanoid';

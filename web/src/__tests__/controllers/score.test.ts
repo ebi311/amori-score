@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** TODO
  * o スコアを追加する
  *   o 同じコースのスコアを上書きする
@@ -9,8 +10,10 @@
  *   o 合計スコアが同じ場合は、小さいスコアが多いほうが 上位（小さい）、と判断する
  *   o 上も同じ場合は、プレイヤーの年齢の大きいほうが 上位（小さい）、と判断する
  */
-import { Player } from '../../controllers/player';
-import { createScore, Score } from '../../controllers/score';
+import { Player } from '../../../../models/player';
+import { Score } from '../../../../models/score';
+import { createScore } from '../../controllers/score';
+
 const player10: Player = {
   name: 'player10',
   age: 10,
@@ -103,23 +106,23 @@ describe('スコアを比較する', () => {
   });
 
   test('スコアのカウント用にスコアをマージしてユニークな配列を作成する', () => {
-    const courseList1 = score['combinedScore'](targetScore1);
+    const courseList1 = (score as any)['combinedScore'](targetScore1);
     expect(courseList1).toEqual([1, 2, 3, 5]);
-    const courseList2 = score['combinedScore'](targetScore2);
+    const courseList2 = (score as any)['combinedScore'](targetScore2);
     expect(courseList2).toEqual([1, 2, 3, 4, 5]);
   });
 
   test('スコアの数を比較する', () => {
-    expect(score['scoreCount'](1)).toBe(2);
-    expect(score['scoreCount'](2)).toBe(1);
+    expect((score as any)['scoreCount'](1)).toBe(2);
+    expect((score as any)['scoreCount'](2)).toBe(1);
     // 1のスコアを比較する
-    expect(score['compareScoreCount'](targetScore1)).toBe(1);
-    expect(score['compareScoreCount'](targetScore2)).toBe(-1);
-    expect(score['compareScoreCount'](targetScore3)).toBe(0);
+    expect((score as any)['compareScoreCount'](targetScore1)).toBe(1);
+    expect((score as any)['compareScoreCount'](targetScore2)).toBe(-1);
+    expect((score as any)['compareScoreCount'](targetScore3)).toBe(0);
     // 1 が同数であれば、2のスコアの数を比較する
-    expect(score['compareScoreCount'](targetScore4)).toBe(-1);
+    expect((score as any)['compareScoreCount'](targetScore4)).toBe(-1);
     targetScore4.set(1, 4);
     targetScore4.set(2, 4);
-    expect(score['compareScoreCount'](targetScore4)).toBe(1);
+    expect((score as any)['compareScoreCount'](targetScore4)).toBe(1);
   });
 });

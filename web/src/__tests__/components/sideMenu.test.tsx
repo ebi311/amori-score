@@ -2,7 +2,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { SideMenu } from '../../components/sideMenu';
-import { Competition } from '../../controllers/competition';
+import { Competition } from '../../../../models/competition';
 import { customRender as render } from './test-utils';
 
 const competition: Competition = {

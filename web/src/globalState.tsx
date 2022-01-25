@@ -1,5 +1,6 @@
-import { Competition, createCompetition } from './controllers/competition';
-import { Player } from './controllers/player';
+import { Competition } from '../../models/competition';
+import { Player } from '../../models/player';
+import { createCompetition } from './controllers/competition';
 
 export type GlobalState = {
   playerDialog: {
@@ -13,17 +14,22 @@ export type GlobalState = {
   };
 };
 
-export const initGlobalState = (): GlobalState => ({
-  playerDialog: {
-    open: false,
-    player: {
-      age: -1,
-      name: '',
+export const initGlobalState = (): GlobalState => {
+  return {
+    playerDialog: {
+      open: false,
+      player: {
+        age: -1,
+        name: '',
+      },
     },
-  },
-  competitionList: [],
-  competitionDialog: {
-    open: false,
-    competition: createCompetition(),
-  },
-});
+    competitionList: [],
+    competitionDialog: {
+      open: false,
+      competition: createCompetition(),
+    },
+  };
+};
+
+// 初回ロード要求メッセージ
+// (window as any).mainApi.loadData();

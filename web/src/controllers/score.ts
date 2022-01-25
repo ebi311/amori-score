@@ -1,13 +1,14 @@
 import { nanoid } from 'nanoid';
-import { Player } from './player';
+import { Player } from '../../../models/player';
+import { DiffRes, Score } from '../../../models/score';
 
-class ScoreImplements {
+class ScoreImplements implements Score {
   private _id = nanoid();
   public get id() {
     return this._id;
   }
-  private score: number[] = [];
-  constructor(public player: Player) {}
+  public readonly score: number[] = [];
+  constructor(public readonly player: Player) {}
   set(course: number, score: number) {
     this.score[course] = score;
   }
@@ -20,7 +21,8 @@ class ScoreImplements {
   compare(target: Score) {
     const myTotal = this.total();
     const targetTotal = target.total();
-    let ret = myTotal < targetTotal ? 1 : myTotal === targetTotal ? 0 : -1;
+    let ret: DiffRes =
+      myTotal < targetTotal ? 1 : myTotal === targetTotal ? 0 : -1;
     if (ret !== 0) return ret;
     // スコアの合計が同じ場合は、少ないスコアのコースが多いほうが上位
     ret = this.compareScoreCount(target);
@@ -47,7 +49,7 @@ class ScoreImplements {
   }
   private compareScoreCount(target: Score) {
     const scoreList = this.combinedScore(target);
-    let ret = 0;
+    let ret: DiffRes = 0;
     scoreList.some((score) => {
       const myCount = this.scoreCount(score);
       const targetCount = target.scoreCount(score);
@@ -57,8 +59,6 @@ class ScoreImplements {
     return ret;
   }
 }
-
-export type Score = ScoreImplements;
 
 export const createScore = (player: Player): Score =>
   new ScoreImplements(player);
