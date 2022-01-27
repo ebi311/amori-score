@@ -1,5 +1,5 @@
+import { Competition } from '@amori-score/models';
 import { nanoid } from 'nanoid';
-import { Competition } from '../../../models/competition';
 
 export const createCompetition = (): Competition => ({
   id: nanoid(),

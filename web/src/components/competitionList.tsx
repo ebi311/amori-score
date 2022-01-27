@@ -1,3 +1,4 @@
+import { Competition } from '@amori-score/models';
 import {
   Box,
   Button,
@@ -13,11 +14,10 @@ import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addCompetition, setDialogForCompetition } from '../actions/actions';
-import { Competition } from '../../../models/competition';
+import { createCompetition } from '../controllers/competition';
 import { GlobalState } from '../globalState';
 import { useStyles } from './commonStyles';
 import { CompetitionDialog } from './competitionDialog';
-import { createCompetition } from '../controllers/competition';
 
 export const CompetitionList: React.FC = () => {
   const styles = useStyles((theme: Theme) => ({

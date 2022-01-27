@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
+    "rm-dist": "rimraf ../electron/web/",
+    "build": "npm run rm-dist && npx webpack --mode=production --node-env=production",
+    "build:dev": "npm run rm-dist && npx webpack --mode=development",
+    "build:prod": "npm run rm-dist && npx webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
     "serve": "webpack serve"
   },

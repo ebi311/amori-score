@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/react-in-jsx-scope */
+import { Player } from '@amori-score/models';
 import '@testing-library/jest-dom';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import { PlayerDialog } from '../../components/playerDialog';
-import { Player } from '../../../../models/player';
 import { customRender as render } from './test-utils';
 
 const player1: Player = {

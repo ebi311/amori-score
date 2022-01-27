@@ -1,7 +1,5 @@
+import { Competition, Player, Score } from '@amori-score/models';
 import { actionCreatorFactory } from 'typescript-fsa';
-import { Competition } from '../../../models/competition';
-import { Player } from '../../../models/player';
-import { Score } from '../../../models/score';
 import { GlobalState } from '../globalState';
 
 const ac = actionCreatorFactory('actions');

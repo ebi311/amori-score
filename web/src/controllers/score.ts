@@ -1,6 +1,5 @@
+import { DiffRes, Player, Score } from '@amori-score/models';
 import { nanoid } from 'nanoid';
-import { Player } from '../../../models/player';
-import { DiffRes, Score } from '../../../models/score';
 
 class ScoreImplements implements Score {
   private _id = nanoid();

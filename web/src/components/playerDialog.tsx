@@ -1,3 +1,4 @@
+import { Player } from '@amori-score/models';
 import {
   Box,
   Button,
@@ -10,7 +11,6 @@ import {
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Player } from '../../../models/player';
 import { GlobalState } from '../globalState';
 
 type Props = {

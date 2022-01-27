@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build:dev -w web && npm start -w electron",
-    "build:web-dev": "webpack --mode=development",
+    "build:web-dev": "npm -w web run build:dev",
     "test:web": "jest ./web/src/__tests__/**",
     "test": "npm test -w web && npm test -w electron"
   },
@@ -36,6 +36,7 @@
     "jest": "^27.4.7",
     "mockdate": "^3.0.5",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.5"
   }

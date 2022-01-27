@@ -11,10 +11,10 @@ const isProduction = process.env.NODE_ENV == 'production';
 const config = {
   target: 'web',
   entry: {
-    main: './web/src/index.tsx',
+    main: './src/index.tsx',
   },
   output: {
-    path: path.resolve(__dirname, './electron/web'),
+    path: path.resolve(__dirname, '../electron/web'),
   },
   devServer: {
     open: true,
@@ -22,7 +22,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './web/index.html',
+      template: './index.html',
     }),
 
     // Add your plugins here

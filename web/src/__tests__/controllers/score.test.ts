@@ -10,8 +10,7 @@
  *   o 合計スコアが同じ場合は、小さいスコアが多いほうが 上位（小さい）、と判断する
  *   o 上も同じ場合は、プレイヤーの年齢の大きいほうが 上位（小さい）、と判断する
  */
-import { Player } from '../../../../models/player';
-import { Score } from '../../../../models/score';
+import { Score, Player } from '@amori-score/models';
 import { createScore } from '../../controllers/score';
 
 const player10: Player = {

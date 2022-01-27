@@ -1,15 +1,14 @@
+import { Player, Score } from '@amori-score/models';
 import { css } from '@emotion/react';
-import { Box, useTheme, IconButton } from '@mui/material';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import clone from 'clone';
 import React, { useCallback, useMemo } from 'react';
-import { Player } from '../../../models/player';
-import { Score } from '../../../models/score';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourseScore } from '../actions/actions';
+import { GlobalState } from '../globalState';
 import { toNumber } from '../utils';
 import { useCommonStyles } from './commonStyles';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { GlobalState } from '../globalState';
-import { setCourseScore } from '../actions/actions';
 
 type Props = {
   competitionId: string;

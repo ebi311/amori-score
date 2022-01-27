@@ -1,3 +1,4 @@
+import { Competition } from '@amori-score/models';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
@@ -17,7 +18,6 @@ import {
   setDialogForCompetition,
   setDialogForPlayer,
 } from '../actions/actions';
-import { Competition } from '../../../models/competition';
 
 type Props = {
   competition: Competition;

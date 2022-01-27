@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import path from 'path';
-import { Competition } from '../../models/competition';
+import { Competition } from '@amori-score/models';
 
 const dataPath = path.join(__dirname, '../data.json');
 

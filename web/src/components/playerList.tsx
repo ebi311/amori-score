@@ -1,11 +1,9 @@
+import { Competition, Player, Score } from '@amori-score/models';
 import { Box, Container, css, Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { Competition } from '../../../models/competition';
-import { Player } from '../../../models/player';
-import { Score } from '../../../models/score';
 import {
   addPlayer,
   deleteScore,

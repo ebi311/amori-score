@@ -1,3 +1,5 @@
+import { Competition } from '@amori-score/models';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { DesktopDatePicker } from '@mui/lab';
 import {
   Button,
@@ -10,11 +12,9 @@ import {
 } from '@mui/material';
 import { Dayjs } from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Competition } from '../../../models/competition';
-import { GlobalState } from '../globalState';
 import { useDispatch, useSelector } from 'react-redux';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteCompetition } from '../actions/actions';
+import { GlobalState } from '../globalState';
 
 type Props = Omit<DialogProps, 'open'> & {
   onCommit: (con: Competition) => void;

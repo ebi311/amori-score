@@ -1,5 +1,4 @@
-import { Competition } from '../../models/competition';
-import { Player } from '../../models/player';
+import { Competition, Player } from '@amori-score/models';
 import { createCompetition } from './controllers/competition';
 
 export type GlobalState = {
