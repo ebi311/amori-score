@@ -7,7 +7,7 @@ import { PlayerList } from './playerList';
 export const App: React.FC = () => {
   return (
     <>
-      <Container>
+      <Container maxWidth="xl">
         <HashRouter>
           <Routes>
             <Route path="/" element={<CompetitionList />} />

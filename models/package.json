@@ -5,7 +5,7 @@
   "types": "dist/index.d.ts",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "npx rimraf ./dist && npx tsc"
   },
   "license": "MIT",
   "author": "kenji.ebihara@jp.ricoh.com"

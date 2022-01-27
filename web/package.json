@@ -7,7 +7,7 @@
     "test": "jest",
     "rm-dist": "rimraf ../electron/web/",
     "build": "npm run rm-dist && npx webpack --mode=production --node-env=production",
-    "build:dev": "npm run rm-dist && npx webpack --mode=development",
+    "build:dev": "npm run rm-dist && npx webpack --mode=development --watch",
     "build:prod": "npm run rm-dist && npx webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
     "serve": "webpack serve"

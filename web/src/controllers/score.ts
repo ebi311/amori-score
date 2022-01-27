@@ -1,13 +1,33 @@
 import { DiffRes, Player, Score } from '@amori-score/models';
 import { nanoid } from 'nanoid';
 
+export type ScoreData = {
+  _id: string;
+  _player: Player;
+  _score: number[];
+};
 class ScoreImplements implements Score {
   private _id = nanoid();
   public get id() {
     return this._id;
   }
-  public readonly score: number[] = [];
-  constructor(public readonly player: Player) {}
+  private _player: Player;
+  public get player() {
+    return this._player;
+  }
+  private _score: number[] = [];
+  public get score() {
+    return this._score;
+  }
+  constructor(arg: ScoreData | Player) {
+    if ('_id' in arg) {
+      this._id = arg._id;
+      this._player = arg._player;
+      this._score = arg._score;
+    } else {
+      this._player = arg;
+    }
+  }
   set(course: number, score: number) {
     this.score[course] = score;
   }
@@ -59,5 +79,5 @@ class ScoreImplements implements Score {
   }
 }
 
-export const createScore = (player: Player): Score =>
+export const createScore = (player: Player | ScoreData): Score =>
   new ScoreImplements(player);

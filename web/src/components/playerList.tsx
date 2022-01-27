@@ -112,11 +112,11 @@ export const PlayerList: React.FC = () => {
   return (
     <>
       <Grid container>
-        <Grid item xs="auto" css={styles.sideMenu}>
+        <Grid item xs={2} css={styles.sideMenu}>
           <SideMenu competition={competition} />
         </Grid>
         <Grid item xs>
-          <Container maxWidth="lg">
+          <Container maxWidth="xl">
             <Typography variant="h4" data-testid="title">
               {competition.title}
             </Typography>
