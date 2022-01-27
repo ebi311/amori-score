@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import * as path from 'path';
+import { ipcMainInterface } from './ipcInterface';
 
 function createWindow() {
   // Create the browser window.
@@ -52,7 +53,7 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-
-ipcMain.handle('load-data', () => {
-  return [{ name: 'ebihara' }];
+type IPCIfKeys = keyof typeof ipcMainInterface;
+Object.keys(ipcMainInterface).forEach((key) => {
+  ipcMain.handle(key, ipcMainInterface[key as IPCIfKeys]);
 });

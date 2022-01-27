@@ -1,10 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { Competition } from '../../models/competition';
+import { Competition } from '@amori-score/models';
 
-contextBridge.exposeInMainWorld('mainApi', {
+export const mainApi = {
   loadData: () => {
-    ipcRenderer.invoke('load-data').then((data: Competition[]) => {
-      console.log(data);
-    });
+    return ipcRenderer.invoke('load-data').then((data: Competition[]) => data);
   },
-});
+};
+contextBridge.exposeInMainWorld('mainApi', mainApi);
