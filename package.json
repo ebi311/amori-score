@@ -21,9 +21,11 @@
   "homepage": "https://github.com/ebi311/amori-score#readme",
   "workspaces": [
     "web",
-    "electron"
+    "electron",
+    "models"
   ],
   "devDependencies": {
+    "@amori-score/models": "file:models",
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
