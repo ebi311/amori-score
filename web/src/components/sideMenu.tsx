@@ -1,8 +1,10 @@
 import { Competition } from '@amori-score/models';
+import { useTheme } from '@emotion/react';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import BackIcon from '@mui/icons-material/ArrowBack';
 import {
   css,
   Divider,
@@ -18,6 +20,7 @@ import {
   setDialogForCompetition,
   setDialogForPlayer,
 } from '../actions/actions';
+import { useStyles } from './commonStyles';
 
 type Props = {
   competition: Competition;
@@ -28,6 +31,19 @@ const iconCss = css`
 `;
 
 export const SideMenu: React.FC<Props> = (props) => {
+  const styles = useStyles((theme) => ({
+    root: css`
+      border-radius: 5px;
+      border: 1px solid ${theme.palette.primary.main};
+      background-color: ${theme.palette.background.paper};
+      & .MuiListItemButton-root {
+        border-radius: 5px;
+        &:hover {
+          background-color: ${theme.palette.action.focus};
+        }
+      }
+    `,
+  }));
   const { competition } = props;
   const dispatch = useDispatch();
   const clickAddPlayer = useCallback(() => {
@@ -38,6 +54,7 @@ export const SideMenu: React.FC<Props> = (props) => {
           age: -1,
           name: '',
         },
+        isNew: true,
       }),
     );
   }, [dispatch]);
@@ -46,20 +63,28 @@ export const SideMenu: React.FC<Props> = (props) => {
   }, [competition, dispatch]);
 
   return (
-    <List>
+    <List css={styles.root}>
       <ListItemButton data-testid="add-player" onClick={clickAddPlayer}>
         <ListItemIcon css={iconCss}>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="参加者を追加する" />
       </ListItemButton>
-      <ListItemButton component={Link} to="/ranking" data-testid="show-ranking">
+      <ListItemButton
+        component={Link}
+        to={'/ranking/' + competition.id}
+        data-testid="show-ranking"
+      >
         <ListItemIcon css={iconCss}>
           <MilitaryTechIcon />
         </ListItemIcon>
         <ListItemText primary="順位を表示する" />
       </ListItemButton>
-      <ListItemButton component={Link} to="/" data-testid="show-scores">
+      <ListItemButton
+        component={Link}
+        to={`/scores/${competition.id}`}
+        data-testid="show-scores"
+      >
         <ListItemIcon css={iconCss}>
           <ViewListIcon />
         </ListItemIcon>
@@ -74,6 +99,12 @@ export const SideMenu: React.FC<Props> = (props) => {
           <EditIcon />
         </ListItemIcon>
         <ListItemText primary="イベント名などを変更する" />
+      </ListItemButton>
+      <ListItemButton component={Link} to="/">
+        <ListItemIcon css={iconCss}>
+          <BackIcon />
+        </ListItemIcon>
+        <ListItemText primary="イベント一覧に戻る" />
       </ListItemButton>
     </List>
   );

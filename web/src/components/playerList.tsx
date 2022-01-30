@@ -1,6 +1,5 @@
 import { Competition, Player, Score } from '@amori-score/models';
-import { Box, Container, css, Grid, Typography } from '@mui/material';
-import dayjs from 'dayjs';
+import { Box, Container, Grid } from '@mui/material';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
@@ -13,27 +12,14 @@ import {
 } from '../actions/actions';
 import { createCompetition } from '../controllers/competition';
 import { GlobalState } from '../globalState';
-import { useStyles } from './commonStyles';
 import { CompetitionDialog } from './competitionDialog';
+import { CompetitionHeader } from './competitionTitle';
 import { LaneHeader } from './laneHeader';
 import { PlayerDialog } from './playerDialog';
 import { PlayerLane } from './playerLane';
 import { SideMenu } from './sideMenu';
 
 export const PlayerList: React.FC = () => {
-  const styles = useStyles((theme) => ({
-    sideMenu: css`
-      border-radius: 5px;
-      border: 1px solid ${theme.palette.primary.main};
-      background-color: ${theme.palette.background.paper};
-      & .MuiListItemButton-root {
-        border-radius: 5px;
-        &:hover {
-          background-color: ${theme.palette.action.focus};
-        }
-      }
-    `,
-  }));
   const { id } = useParams();
   const competition = useSelector<GlobalState, Competition>(
     (a) => a.competitionList.find((a) => a.id === id) || createCompetition(),
@@ -52,6 +38,7 @@ export const PlayerList: React.FC = () => {
         setDialogForPlayer({
           open: true,
           player,
+          isNew: false,
         }),
       );
     },
@@ -77,7 +64,7 @@ export const PlayerList: React.FC = () => {
     ));
   }, [competition.id, onDeletePlayer, onEditPlayer, scores]);
   const onCommitPlayerDialog = useCallback(
-    (player: Player) => {
+    (player: Player, isNew: boolean) => {
       if (!id) return;
       dispatch(addPlayer({ player, competitionId: id }));
       dispatch(
@@ -112,18 +99,12 @@ export const PlayerList: React.FC = () => {
   return (
     <>
       <Grid container>
-        <Grid item xs={2} css={styles.sideMenu}>
+        <Grid item xs={2}>
           <SideMenu competition={competition} />
         </Grid>
         <Grid item xs>
           <Container maxWidth="xl">
-            <Typography variant="h4" data-testid="title">
-              {competition.title}
-            </Typography>
-            <Typography variant="subtitle1" data-testid="subtitle">
-              {dayjs(competition.date).format('YYYY年M月D日')} 開催場所&#xFF1A;{' '}
-              {competition.place}
-            </Typography>
+            <CompetitionHeader competition={competition} />
             <LaneHeader courseCount={courseCount} />
             <Box data-testid="rows">{rows}</Box>
           </Container>

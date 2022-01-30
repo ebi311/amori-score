@@ -41,13 +41,13 @@ class ScoreImplements implements Score {
     const myTotal = this.total();
     const targetTotal = target.total();
     let ret: DiffRes =
-      myTotal < targetTotal ? 1 : myTotal === targetTotal ? 0 : -1;
+      myTotal < targetTotal ? -1 : myTotal === targetTotal ? 0 : 1;
     if (ret !== 0) return ret;
     // スコアの合計が同じ場合は、少ないスコアのコースが多いほうが上位
     ret = this.compareScoreCount(target);
     if (ret !== 0) return ret;
     // 上も同位の場合、年齢が上の方が上位
-    return this.player.age < target.player.age
+    return this.player.age > target.player.age
       ? -1
       : this.player.age === target.player.age
       ? 0
@@ -59,7 +59,7 @@ class ScoreImplements implements Score {
     const mergeIndexes = [...indexes, ...targetIndexes];
     const uniqueIndexes = Array.from(new Set(mergeIndexes))
       .filter((a) => !!a)
-      .sort((a, b) => (a < b ? -1 : 1));
+      .sort((a, b) => (a < b ? -1 : a == b ? 0 : 1));
     return uniqueIndexes;
   }
   scoreCount(score: number) {
@@ -72,7 +72,7 @@ class ScoreImplements implements Score {
     scoreList.some((score) => {
       const myCount = this.scoreCount(score);
       const targetCount = target.scoreCount(score);
-      ret = myCount > targetCount ? 1 : myCount === targetCount ? 0 : -1;
+      ret = myCount > targetCount ? -1 : myCount === targetCount ? 0 : 1;
       return ret !== 0;
     });
     return ret;

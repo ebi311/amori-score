@@ -24,7 +24,7 @@ test('open に false を渡すと、ダイアログを表示しない。', () =>
 test('open に true を渡すと、ダイアログを表示する。', () => {
   const [{ queryByTestId }] = render(
     <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   expect(queryByTestId('player-dialog')).toBeTruthy();
 });
@@ -33,7 +33,7 @@ test('プロパティで渡した Player の情報を表示する。', () => {
     cleanup();
     const [{ getByTestId }] = render(
       <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
-      { playerDialog: { open: true, player } },
+      { playerDialog: { open: true, player, isNew: true } },
     );
     const name = getByTestId('name-textbox').querySelector('input');
     expect(name?.value).toBe(player.name);
@@ -44,7 +44,7 @@ test('プロパティで渡した Player の情報を表示する。', () => {
 test('名前と年齢を変更する。', () => {
   const [{ getByTestId }] = render(
     <PlayerDialog onCommit={() => {}} onClose={() => undefined} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   let name = getByTestId('name-textbox').querySelector(
     'input',
@@ -64,13 +64,14 @@ test('名前と年齢を変更する。', () => {
   expect(age.value).toBe('');
 });
 test('保存ボタンを押すと、プロパティの onCommit を実行する。', () => {
-  const onChange = jest.fn((player: Player) => {
+  const onChange = jest.fn((player: Player, isNew: boolean) => {
     expect(player.name).toBe('プレイヤ２');
     expect(player.age).toBe(31);
+    expect(isNew).toBe(true);
   });
   const [{ getByTestId }] = render(
     <PlayerDialog onCommit={onChange} onClose={() => undefined} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   let name = getByTestId('name-textbox').querySelector(
     'input',
@@ -90,7 +91,7 @@ test('キャンセルボタンを押すと、プロパティの onClose を実�
   const onClose = jest.fn();
   const [{ getByTestId }] = render(
     <PlayerDialog onCommit={() => {}} onClose={onClose} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   const closeButton = getByTestId('cancel-button');
   fireEvent.click(closeButton);
@@ -100,7 +101,7 @@ test('ESCキーを押すと、プロパティの onClose を実行する。', as
   const onClose = jest.fn();
   const [{ getByTestId }] = render(
     <PlayerDialog onCommit={() => {}} onClose={onClose} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   const dialog = getByTestId('player-dialog');
   fireEvent.keyDown(dialog, { key: 'Esc' });
@@ -110,7 +111,7 @@ test('入力チェック', async () => {
   const onChange = jest.fn();
   const [{ getByTestId }] = render(
     <PlayerDialog onCommit={onChange} onClose={() => undefined} />,
-    { playerDialog: { open: true, player: player1 } },
+    { playerDialog: { open: true, player: player1, isNew: true } },
   );
   let name: HTMLElement = getByTestId('name-textbox');
   let age: HTMLElement = getByTestId('age-textbox');

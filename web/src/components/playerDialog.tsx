@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { GlobalState } from '../globalState';
 
 type Props = {
-  onCommit: (player: Player) => void;
+  onCommit: (player: Player, isNew: boolean) => void;
   onClose: () => void;
 };
 
@@ -26,10 +26,13 @@ const styles = {
 
 export const PlayerDialog: React.FC<Props> = (props) => {
   const { onCommit, onClose } = props;
-  const { open, player: _player } = useSelector<
-    GlobalState,
-    GlobalState['playerDialog']
-  >((s) => s.playerDialog);
+  const {
+    open,
+    player: _player,
+    isNew,
+  } = useSelector<GlobalState, GlobalState['playerDialog']>(
+    (s) => s.playerDialog,
+  );
   const [player, setPlayer] = useState(_player);
   useEffect(() => setPlayer(_player), [_player]);
   const [errors, setErrors] = useState<{ name: boolean; age: boolean }>({
@@ -62,8 +65,8 @@ export const PlayerDialog: React.FC<Props> = (props) => {
   );
   const onSave = useCallback(() => {
     if (hasError(player)) return;
-    onCommit(player);
-  }, [hasError, onCommit, player]);
+    onCommit(player, isNew);
+  }, [hasError, isNew, onCommit, player]);
   const onCancel = useCallback(() => {
     onClose();
   }, [onClose]);

@@ -55,30 +55,35 @@ describe('スコアを比較する', () => {
   let targetScore3: Score;
   let targetScore4: Score;
   beforeEach(() => {
+    // 合計: 12, (1): 2 (2): 1, age: 10
     score = createScore(player10);
     score.set(1, 2);
     score.set(2, 1);
     score.set(3, 1);
     score.set(4, 3);
     score.set(5, 5);
+    // 合計: 13
     targetScore1 = createScore(player10);
     targetScore1.set(1, 2);
     targetScore1.set(2, 2);
     targetScore1.set(3, 1);
     targetScore1.set(4, 3);
     targetScore1.set(5, 5);
+    // 合計: 12, (1): 3
     targetScore2 = createScore(player11);
     targetScore2.set(1, 4);
     targetScore2.set(2, 1);
     targetScore2.set(3, 1);
     targetScore2.set(4, 1);
     targetScore2.set(5, 5);
+    // 合計: 12, (1): 2, age: 11
     targetScore3 = createScore(player11);
     targetScore3.set(1, 3);
     targetScore3.set(2, 2);
     targetScore3.set(3, 1);
     targetScore3.set(4, 1);
     targetScore3.set(5, 5);
+    // 合計: 12, (1): 2
     targetScore4 = createScore(player11);
     targetScore4.set(1, 6);
     targetScore4.set(2, 2);
@@ -87,21 +92,21 @@ describe('スコアを比較する', () => {
     targetScore4.set(5, 2);
   });
   test('対象のスコアの合計が小さい場合、"1", 大きい場合 "-1', () => {
-    expect(score.compare(targetScore1)).toBe(1);
+    expect(score.compare(targetScore1)).toBe(-1);
     targetScore1.set(2, 1);
     expect(score.compare(targetScore1)).toBe(0);
     targetScore1.set(1, 1);
-    expect(score.compare(targetScore1)).toBe(-1);
+    expect(score.compare(targetScore1)).toBe(1);
   });
   test('合計が同数の場合、小さいスコアの数で決める', () => {
-    expect(score.compare(targetScore2)).toBe(-1);
-    expect(score.compare(targetScore4)).toBe(-1);
+    expect(score.compare(targetScore2)).toBe(1);
+    expect(score.compare(targetScore4)).toBe(1);
     targetScore4.set(1, 4);
     targetScore4.set(2, 4);
-    expect(score.compare(targetScore4)).toBe(1);
+    expect(score.compare(targetScore4)).toBe(-1);
   });
   test('合計もスコア数も同じ場合、年齢で決まる', () => {
-    expect(score.compare(targetScore3)).toBe(-1);
+    expect(score.compare(targetScore3)).toBe(1);
   });
 
   test('スコアのカウント用にスコアをマージしてユニークな配列を作成する', () => {
@@ -115,13 +120,13 @@ describe('スコアを比較する', () => {
     expect((score as any)['scoreCount'](1)).toBe(2);
     expect((score as any)['scoreCount'](2)).toBe(1);
     // 1のスコアを比較する
-    expect((score as any)['compareScoreCount'](targetScore1)).toBe(1);
-    expect((score as any)['compareScoreCount'](targetScore2)).toBe(-1);
+    expect((score as any)['compareScoreCount'](targetScore1)).toBe(-1);
+    expect((score as any)['compareScoreCount'](targetScore2)).toBe(1);
     expect((score as any)['compareScoreCount'](targetScore3)).toBe(0);
     // 1 が同数であれば、2のスコアの数を比較する
-    expect((score as any)['compareScoreCount'](targetScore4)).toBe(-1);
+    expect((score as any)['compareScoreCount'](targetScore4)).toBe(1);
     targetScore4.set(1, 4);
     targetScore4.set(2, 4);
-    expect((score as any)['compareScoreCount'](targetScore4)).toBe(1);
+    expect((score as any)['compareScoreCount'](targetScore4)).toBe(-1);
   });
 });

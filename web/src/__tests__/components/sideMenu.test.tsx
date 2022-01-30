@@ -33,7 +33,7 @@ test('順位をページに遷移するボタンクリック時の処理', () =>
     <MemoryRouter initialIndex={1}>
       <Routes>
         <Route path="/" element={<SideMenu competition={competition} />} />
-        <Route path="/ranking" element={<div>Ranking</div>} />
+        <Route path="/ranking/:id" element={<div>Ranking</div>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -46,7 +46,7 @@ test('スコアページに遷移するボタンクリック時の処理', () =>
     <MemoryRouter initialEntries={['/dummy']}>
       <Routes>
         <Route path="/dummy" element={<SideMenu competition={competition} />} />
-        <Route path="/" element={<div>Scores</div>} />
+        <Route path="/scores/:id" element={<div>Scores</div>} />
       </Routes>
     </MemoryRouter>,
   );

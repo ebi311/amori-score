@@ -5,6 +5,7 @@ export type GlobalState = {
   playerDialog: {
     open: boolean;
     player: Player;
+    isNew: boolean;
   };
   competitionList: Competition[];
   competitionDialog: {
@@ -21,6 +22,7 @@ export const initGlobalState = (): GlobalState => {
         age: -1,
         name: '',
       },
+      isNew: true,
     },
     competitionList: [],
     competitionDialog: {
