@@ -23,7 +23,7 @@ export const addPlayer =
   ac<{ player: Player; competitionId: string }>('add-player');
 
 export const updatePlayer =
-  ac<{ player: Player; competitionId: string }>('add-player');
+  ac<{ player: Player; competitionId: string }>('update-player');
 
 export const deleteScore =
   ac<{ competitionId: string; scoreId: string }>('delete-score');
