@@ -2,7 +2,10 @@ import * as fs from 'fs-extra';
 import path from 'path';
 import { Competition } from '@amori-score/models';
 
-const dataPath = path.join(__dirname, '../data.json');
+const homeDir = process.env['HOME'] || process.env['USERPROFILE'];
+const dataDir = path.join(homeDir, '.pat-kun');
+fs.ensureDirSync(dataDir);
+const dataPath = path.join(dataDir, 'data.json');
 
 export const ipcMainInterface = {
   loadData: async () => {

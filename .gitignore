@@ -106,3 +106,4 @@ dist
 webpack-state/
 
 electron/web
+electron/main

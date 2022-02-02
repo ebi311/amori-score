@@ -1,0 +1,8 @@
+appId: com.example.amori.ebihara
+productName: pat-kun
+files:
+  - main
+  - web
+# linux:
+#   executableName": "desiredName"
+#   artifactName": "${productName}-${version}.${ext}"
