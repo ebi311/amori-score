@@ -1,6 +1,6 @@
 import { Competition } from '@amori-score/models';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DesktopDatePicker } from '@mui/lab';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import {
   Button,
   Dialog,
@@ -113,7 +113,8 @@ export const CompetitionDialog: React.FC<Props> = (props) => {
             inputFormat="YYYY/MM/DD"
             value={competition.date}
             onChange={onChangeDate}
-            renderInput={(params) => (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            renderInput={(params: any) => (
               <TextField
                 {...params}
                 data-testid="date-input"

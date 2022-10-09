@@ -1,7 +1,7 @@
 import { Competition } from '@amori-score/models';
 import { Global } from '@emotion/react';
-import { LocalizationProvider } from '@mui/lab';
-import DateAdapter from '@mui/lab/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider } from '@mui/material/styles';
 import clone from 'clone';
 import deepEqual from 'deep-equal';
@@ -49,7 +49,7 @@ window.mainApi.loadData().then((compeList) => {
   });
   render(
     <>
-      <LocalizationProvider dateAdapter={DateAdapter}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Provider store={store}>
           <Global styles={globalStyle} />
           <ThemeProvider theme={theme}>

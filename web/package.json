@@ -29,6 +29,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.64",
     "@mui/material": "^5.2.7",
+    "@mui/x-date-pickers": "^5.0.4",
     "clone": "^2.1.2",
     "dayjs": "^1.10.7",
     "nanoid": "^3.1.32",

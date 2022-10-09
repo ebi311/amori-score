@@ -9,11 +9,13 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, './preload.js'),
     },
-    width: 800,
+    width: 1024,
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '../web/index.html'));
+
+  mainWindow.removeMenu();
 
   if (app.commandLine.hasSwitch('dev')) {
     // Open the DevTools.
